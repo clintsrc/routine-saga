@@ -14,7 +14,11 @@ $ python -m venv .venv
 
 ```bash
 $ python -m venv .venv
-$ source .venv/bin/activate   # run it
+# run it:
+# nonwindows use:
+$ source .venv/bin/activate
+# windows use:
+$ source .venv/Scripts/activate
 $ deactivate   # to exit
 ```
 
@@ -48,9 +52,11 @@ $ django-admin startproject core .   # the dot makes it readily deployable
 ### 2. Create the SQLite database
 
 ```bash
-$ python manage.py migrate   # create the database
-$ python manage.py runserver   # test it in a browser: http://localhost:
-[Ctrl+C to exit]
+# create the database
+$ python manage.py migrate
+# test it in a browser: http://localhost:8000
+$ python manage.py runserver [optional_port_number]
+# [Ctrl+C to exit]
 ```
 
 ### 3. Create main app
@@ -65,4 +71,5 @@ $ python manage.py runserver   # if it's not already running
 $ python manage.py startapp notes   # create the main app
 ```
 
-- 'notes' is for the app logic (routes, controllers, db models)
+- Here the 'notes' app for the app logic (routes, controllers, db models)
+
