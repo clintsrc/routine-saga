@@ -22,7 +22,7 @@ from django.http import HttpResponse
 
 # A minimal view to verify the deployment
 def home_view(request):
-    return HttpResponse("Forthcoming! A Django Routine Saga app hosted on Render!")
+    return HttpResponse("Forthcoming! A Django Routine Saga app!")
 
 
 urlpatterns = [
