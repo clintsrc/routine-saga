@@ -40,7 +40,8 @@ ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost").split(",")
 ```
 
 ### Create a Minimal View
-- The production environment requires a minimal view to serve as the default page.
+- The production environment requires a minimal view to serve as the default page (
+    similar to a react component).
 Add one to the core/urls.py file:
 ```python
 ...
@@ -59,13 +60,21 @@ urlpatterns = [
 ```
 ## Render Deployment
 - Configure a render deployment
-
-TODO:
-Set repo and branch
-Choose python3
-Build command:
-Run command:
-Environment variables
+1. Set the repository and branch
+1. Build Command:
+```bash
+pip install -r requirements.txt
+```
+1. Start Command:
+```bash
+python manage.py runserver 0.0.0.0:$PORT
+```
+1. Set the Environment variables, e.g.:
+```env
+DJANGO_SECRET_KEY=<password>   # openssl rand -base64 50, (strip the trailing =)
+DJANGO_ALLOWED_HOSTS=https://<app_name>.onrender.com
+```
 
 ## Configure GitHub Actions Builds
 .github/workflows/build.yml
+TODO
