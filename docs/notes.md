@@ -32,6 +32,8 @@ $ python -m pip install --upgrade pip
 
 ```bash
 $ python -m pip install django && pip freeze > requirements.txt
+# NOTE: to import an existing requirements.txt
+$ pip install -r requirements.txt
 ```
 
 ## Setup Django project
@@ -59,17 +61,35 @@ $ python manage.py runserver [optional_port_number]
 # [Ctrl+C to exit]
 ```
 
-### 3. Create main app
+### 3. Create main app (i.e. notes)
 
 - Django projects have multiple apps (e.g. one does most of the work, another might
   be user management, etc.)
+- In javascript terms an app module has the component, the routes and the database model
 
 ```bash
-$ python manage.py runserver   # if it's not already running
-# Open another terminal in the same path (project root)
-# Start the venv environment for that terminal
-$ python manage.py startapp notes   # create the main app
+$ python manage.py startapp <app_name>   # create the main app module
 ```
 
-- Here the 'notes' app for the app logic (routes, controllers, db models)
+### 4. Setup the data model
 
+1. Define the data model
+   - See the notes/models.py
+   - ref: https://docs.djangoproject.com/en/4.1/ref/models/fields
+1. Hook the data model up to the project
+   - Add the app to the INSTALLED_APPS list (see core/settings.py)
+```python
+INSTALLED_APPS = [
+    # user apps
+    "notes",
+    ...
+```
+1. Apply the changes to the database
+```bash
+# generate translate the data model to a 'sql script' (0001_initial.py)
+$ python manage.py makemigrations <app_name>
+# Apply the changes to the database
+$ python manage.py migrate
+```
+
+### 5. Setup an Admin site and Superuser

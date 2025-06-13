@@ -37,6 +37,9 @@ ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost").split(",")
 # Application definition
 
 INSTALLED_APPS = [
+    # user apps
+    "notes",
+    # core apps
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
