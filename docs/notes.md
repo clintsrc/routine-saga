@@ -56,8 +56,13 @@ $ django-admin startproject core .   # the dot makes it readily deployable
 ```bash
 # create the database
 $ python manage.py migrate
-# test it in a browser: http://localhost:8000
+```
+
+Start the server:
+
+```bash
 $ python manage.py runserver [optional_port_number]
+# test it in a browser: http://localhost:8000
 # [Ctrl+C to exit]
 ```
 
@@ -78,13 +83,17 @@ $ python manage.py startapp <app_name>   # create the main app module
    - ref: https://docs.djangoproject.com/en/4.1/ref/models/fields
 1. Hook the data model up to the project
    - Add the app to the INSTALLED_APPS list (see core/settings.py)
+
 ```python
 INSTALLED_APPS = [
     # user apps
     "notes",
     ...
 ```
-1. Apply the changes to the database
+
+1. Apply the changes to the database (run these commands whenever you make changes to
+   the model)
+
 ```bash
 # generate translate the data model to a 'sql script' (0001_initial.py)
 $ python manage.py makemigrations <app_name>
@@ -93,3 +102,58 @@ $ python manage.py migrate
 ```
 
 ### 5. Setup an Admin site and Superuser
+
+1. Create a superuser:
+
+```bash
+   python manage.py createsuperuser
+
+```
+
+1. Register a model with the admin site. Update <app_name>/admin.py:
+
+```python
+...
+from .models import Topic
+
+admin.site.register(<model_name>)
+```
+
+1. Navigate to http://localhost:8000/admin
+1. Try creating a new topic
+
+## Django Shell (especially for testing and debugging)
+
+- ref: https://docs.djangoproject.com/en/4.1/topics/db/queries
+
+1. Start the Django CLI:
+
+```bash
+   python manage.py shell
+```
+
+2. Open a model
+
+```bash
+>> from <app_name>.models import <Model_name>
+>> <Model_name>.objects.all()
+```
+
+Run some queries:
+
+```bash
+# Loop over a queryset, eg:
+>> topics = Topic.objects.all()
+>> for topic in topics:
+      print(topic.id, topic)
+```
+
+```bash
+# Access data by id, eg:
+>> t = Topic.objects.get(id=1)
+>> t.text
+>> t.date_added
+# Get data via foreign key with _set
+>> t.entry_set.all()
+>> quit()
+```
