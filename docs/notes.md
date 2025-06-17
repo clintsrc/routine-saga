@@ -139,7 +139,7 @@ admin.site.register(<model_name>)
 >> <Model_name>.objects.all()
 ```
 
-Run some queries:
+3. Run queries:
 
 ```bash
 # Loop over a queryset, eg:
@@ -156,4 +156,75 @@ Run some queries:
 # Get data via foreign key with _set
 >> t.entry_set.all()
 >> quit()
+```
+
+## Django Webpage Anatomy
+
+1. Define the URL in urls.py (similar to a React route)
+1. Write the View in views.py (similar to a React component)
+1. Write the template (base html layout)
+
+### URL (urls.py):
+
+```python
+from django.contrib import admin
+from django.urls import path, include
+
+# define all urls for the website
+urlpatterns = [
+    # all urls specifically available for the admin site
+    path("admin/", admin.site.urls),
+    # all urls specifically available for the main app site
+    path("", include("<app_name>.urls")),
+]
+```
+
+### Create <app_name>/urls.py
+
+```python
+Define URLs for the app itself
+"""
+URL configuration for the main app (home page).
+"""
+
+from django.urls import path, include
+from . import views  # import ./views.py
+
+# Unique name helps Django to identify this specific urls.py
+app_name = "<app_name>"
+
+# define all urls for the website
+urlpatterns = [
+    # Home page
+    # Add "" to the route to match the default (root) path "/"
+    # views.index: the function Django will call in views.py when this route is matched
+    # name="index": a name/alias for this route (useful for reverse lookups)
+    path("", views.index, name="index"),
+    # Any additional pages available for this app...
+]
+```
+
+### Add a view to <app_name>/views.py
+
+```python
+from django.shortcuts import render
+
+
+def index(request):
+    """Routine Saga Home page"""
+    # Render and return the 'index.html' template for the Routine Saga app
+    return render(request, "<app_name>/index.html")
+```
+
+### Create a template: <app_name>/templates/<app_name>/index.html
+```html
+<p>Home Page</p>
+
+<p>Welcome to the site!</p>
+```
+
+Start the server and test it out:
+```bash
+$ python manage.py runserver
+Then open: http://localhost:8000
 ```

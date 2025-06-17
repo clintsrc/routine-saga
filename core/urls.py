@@ -16,7 +16,7 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.http import HttpResponse
 
 
@@ -25,7 +25,10 @@ def home_view(request):
     return HttpResponse("Forthcoming! A Django Routine Saga app!")
 
 
+# define all urls for the website
 urlpatterns = [
+    # all urls specifically available for the admin site
     path("admin/", admin.site.urls),
-    path("", home_view),
+    # all urls specifically available for the main app site
+    path("", include("notes.urls")),
 ]
