@@ -228,3 +228,75 @@ Start the server and test it out:
 $ python manage.py runserver
 Then open: http://localhost:8000
 ```
+### Inherited Templates
+#### Create a base template: <app_name>/templates/<app_name>/base.html
+```html
+<!-- use a template tag: {'% %'} //-->
+
+<!-- Create a link using the index alias in the urls.py file -->
+<p>
+  <a href="{% url 'notes:index' %}">App Name</a> -
+  <a href="{% url 'notes:topics' %}">Topics</a>
+</p>
+
+<!-- The child template will define what is rendered here as needed -->
+{% block content %} {% endblock content %}
+```
+#### Update the index.html to use the base template
+(Update: <app_name>/templates/<app_name>/index.html)
+```html
+<!-- 'extends' the parent template it inherits from //-->
+{% extends '<app_name>/base.html' %}
+
+<!-- Specify the content block //-->
+{% block content %}
+<p>App description</p>
+{% endblock content %}
+```
+#### An example 'topics' page
+(Update: <app_name>/templates/<app_name>/topics.html)
+```html
+<!-- 'extends' the parent template it inherits from //-->
+{% extends 'notes/base.html' %}
+
+<!-- Specify the content block //-->
+{% block content %}
+<p>Topics</p>
+<!-- Use a for loop to populate an unordered list from the context dictionary
+    which contains the topics queried from the database //-->
+<ul>
+  {% for topic in topics %}
+  <!-- Double brace for variable interplation //-->
+  <li>{{topic.text}}</li>
+  <!-- Handle and empty query result //-->
+  {% empty %}
+  <li>No topics have been added yet.</li>
+  {% endfor %}
+</ul>
+{% endblock content %}
+```
+#### Add the url pattern to match the topics page:
+(Update: <app_name>/urls.py)
+```python
+...
+urlpatterns = [
+    ...
+    path("", views.index, name="index"),
+    # Any additional pages available for this app...
+    path("topics/", views.topics, name="topics"),
+]
+```
+#### Add the topic page view:
+(Update: <app_name>/views.py)
+```python
+...
+from .models import Topic
+
+def topics(request):
+    """Routine Saga Topics page"""
+    # query the database for the Topics, sort by date
+    topics = Topic.objects.order_by("date_added")
+    # define the context (here a dictionary)
+    context = {"topics": topics}
+    return render(request, "<app_name>/topics.html", context)
+```

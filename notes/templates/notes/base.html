@@ -1,0 +1,10 @@
+<!-- use a template tag: {'% %'} //-->
+
+<!-- Create a link using the index alias in the urls.py file -->
+<p>
+  <a href="{% url 'notes:index' %}">Routine Notes</a> -
+  <a href="{% url 'notes:topics' %}">Topics</a>
+</p>
+
+<!-- The child template will define what is rendered here as needed -->
+{% block content %} {% endblock content %}
