@@ -16,5 +16,8 @@ urlpatterns = [
     # name="index": a name/alias for this route (useful for reverse lookups)
     path("", views.index, name="index"),
     # Any additional pages available for this app...
+    # Topics list
     path("topics/", views.topics, name="topics"),
+    # Topic details by its id (e.g. http://<app_name>/topics/1/)
+    path("topics/<int:topic_id>/", views.topic, name="topic"),
 ]

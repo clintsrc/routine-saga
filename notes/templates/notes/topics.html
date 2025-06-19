@@ -9,7 +9,7 @@
 <ul>
   {% for topic in topics %}
   <!-- Double brace for variable interplation //-->
-  <li>{{topic.text}}</li>
+  <li><a href="{% url 'notes:topic' topic.id %}">{{topic.text}}</a></li>
   <!-- Handle and empty query result //-->
   {% empty %}
   <li>No topics have been added yet.</li>
