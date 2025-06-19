@@ -1,0 +1,18 @@
+<!-- 'extends' the parent template it inherits from //-->
+{% extends 'notes/base.html' %}
+
+<!-- Specify the content block //-->
+{% block content %}
+<p>Topics</p>
+<!-- Use a for loop to populate an unordered list from the context dictionary
+    which contains the topics queried from the database //-->
+<ul>
+  {% for topic in topics %}
+  <!-- Double brace for variable interplation //-->
+  <li><a href="{% url 'notes:topic' topic.id %}">{{topic.text}}</a></li>
+  <!-- Handle and empty query result //-->
+  {% empty %}
+  <li>No topics have been added yet.</li>
+  {% endfor %}
+</ul>
+{% endblock content %}

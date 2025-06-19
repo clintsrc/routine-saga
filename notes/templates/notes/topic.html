@@ -1,0 +1,21 @@
+<!-- 'extends' the parent template it inherits from //-->
+{% extends 'notes/base.html' %}
+
+<!-- Specify the content block //-->
+{% block content %}
+<p>Topic: {{topic.text}}</p>
+<p>Entries:</p>
+<!-- Use a for loop to populate an unordered list from the context dictionary
+    which contains the topic entries queried from the database //-->
+<ul>
+  {% for entry in entries %}
+  <!-- Django uses the | operator to format the data field output //-->
+  <li><p>{{entry.date_added|date:'M d, Y H:i'}}</p>
+  <!-- linebreaks will handle the necessary html <br> breaks //-->
+  <p>{{entry.text|linebreaks}}</p></li>
+  <!-- Handle and empty query result //-->
+  {% empty %}
+  <li>There are no entries for this topic yet.</li>
+  {% endfor %}
+</ul>
+{% endblock content %}
