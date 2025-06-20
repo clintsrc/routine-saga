@@ -1,0 +1,20 @@
+<!-- 'extends' the parent template it inherits from //-->
+{% extends "notes/base.html" %} {% block content %}
+<!-- Show the topic and link back to main page //-->
+<p><a href="{% url 'notes:topic' topic.id %}">{{topic}}</a></p>
+<p>Edit entry:</p>
+<!--
+  Create the form:
+  action: send the form data to the edit_entry() view function and the
+    associated entry id
+  method: submit the data as a POST
+//-->
+<form action="{% url 'notes:edit_entry' entry.id %}" method="post">
+  <!-- csrf_token: prevent cross-site forgery attacks //-->
+  {% csrf_token %}
+  <!-- Django can automatically handle displaying the fields as div entries //-->
+  {{form.as_div}}
+  <!-- the form submit button //-->
+  <button name="submit">Apply</button>
+</form>
+{% endblock content%}

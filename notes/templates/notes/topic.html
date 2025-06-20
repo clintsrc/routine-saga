@@ -11,9 +11,12 @@
 <ul>
   {% for entry in entries %}
   <!-- Django uses the | operator to format the data field output //-->
-  <li><p>{{entry.date_added|date:'M d, Y H:i'}}</p>
-  <!-- linebreaks will handle the necessary html <br> breaks //-->
-  <p>{{entry.text|linebreaks}}</p></li>
+  <li>
+    <p>{{entry.date_added|date:'M d, Y H:i'}}</p>
+    <!-- linebreaks will handle the necessary html <br> breaks //-->
+    <p>{{entry.text|linebreaks}}</p>
+    <p><a href="{% url 'notes:edit_entry' entry.id %}">Edit entry</a></p>
+  </li>
   <!-- Handle and empty query result //-->
   {% empty %}
   <li>There are no entries for this topic yet.</li>

@@ -2,7 +2,7 @@
 # Import redirect to forward from new_topic to the topic page on submit
 from django.shortcuts import render, redirect
 
-from .models import Topic
+from .models import Topic, Entry
 from .forms import TopicForm, EntryForm  # Import the new submission form
 
 
@@ -93,3 +93,32 @@ def new_entry(request, topic_id):
     context = {"topic": topic, "form": form}
     # Store the form in the context dictionary to pass it along to the template
     return render(request, "notes/new_entry.html", context)
+
+
+##
+# Update routes
+#
+def edit_entry(request, entry_id):
+    """Edit an existing Entry"""
+    entry = Entry.objects.get(id=entry_id)
+    topic = entry.topic
+
+    if request.method != "POST":
+        # Load a blank form (no arguments)
+        # Populate the form with data for the existing entry
+        form = EntryForm(instance=entry)
+    else:
+        # POST request on form submit
+        # Pass the preexisting info modified by the new input data
+        form = EntryForm(instance=entry, data=request.POST)
+        if form.is_valid():
+            # Entry is already associated with the correct topic
+            form.save()  # write to the database
+            # Specify the view for the redirect target and topic_id
+            #   argument
+            topic_id = topic.id
+            return redirect(
+                "notes:topic", topic_id=topic_id
+            )  # forward to view the Entry page
+    context = {"entry": entry, "topic": topic, "form": form}
+    return render(request, "notes/edit_entry.html", context)
