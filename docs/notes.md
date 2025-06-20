@@ -217,6 +217,7 @@ def index(request):
 ```
 
 ### Create a template: <app_name>/templates/<app_name>/index.html
+
 ```html
 <p>Home Page</p>
 
@@ -224,12 +225,16 @@ def index(request):
 ```
 
 Start the server and test it out:
+
 ```bash
 $ python manage.py runserver
 Then open: http://localhost:8000
 ```
+
 ### Inherited Templates
+
 #### Create a base template: <app_name>/templates/<app_name>/base.html
+
 ```html
 <!-- use a template tag: {'% %'} //-->
 
@@ -242,19 +247,27 @@ Then open: http://localhost:8000
 <!-- The child template will define what is rendered here as needed -->
 {% block content %} {% endblock content %}
 ```
+
 #### Update the index.html to use the base template
+
 (Update: <app_name>/templates/<app_name>/index.html)
+
 ```html
 <!-- 'extends' the parent template it inherits from //-->
-{% extends '<app_name>/base.html' %}
+{% extends '<app_name
+  >/base.html' %}
 
-<!-- Specify the content block //-->
-{% block content %}
-<p>App description</p>
-{% endblock content %}
+  <!-- Specify the content block //-->
+  {% block content %}
+  <p>App description</p>
+  {% endblock content %}</app_name
+>
 ```
+
 #### An example 'topics' page
+
 (Update: <app_name>/templates/<app_name>/topics.html)
+
 ```html
 <!-- 'extends' the parent template it inherits from //-->
 {% extends 'notes/base.html' %}
@@ -275,8 +288,11 @@ Then open: http://localhost:8000
 </ul>
 {% endblock content %}
 ```
+
 #### Add the url pattern to match the topics page:
+
 (Update: <app_name>/urls.py)
+
 ```python
 ...
 urlpatterns = [
@@ -286,8 +302,11 @@ urlpatterns = [
     path("topics/", views.topics, name="topics"),
 ]
 ```
+
 #### Add the topic page view:
+
 (Update: <app_name>/views.py)
+
 ```python
 ...
 from .models import Topic
@@ -299,4 +318,89 @@ def topics(request):
     # define the context (here a dictionary)
     context = {"topics": topics}
     return render(request, "<app_name>/topics.html", context)
+```
+
+## Create an entry form
+### Create a form for a model: <app_name>/forms.py
+```python
+from django import forms
+
+from .models import Topic
+
+# Inherit ModelForm base form from Django
+class TopicForm(forms.ModelForm):
+    class Meta:  # describes which form and fields to inherit
+        model = Topic   # use our Topic model
+        fields = ['text']   # Include the text field
+        labels = {'text': ''}   # Do not generate a label for the text field
+```
+### Add and endpoint for the new Topics page
+(Update: <app_name>/urls.py)
+```python
+urlpatterns = [
+    ...
+    # Create a new topic
+    path("new_topic/", views.new_topic, name="new_topic"),
+]
+```
+### Add add a new Topics view
+(Update: <app_name>/views.py)
+```python
+# Import redirect to forward from new_topic to the topic page on submit
+from django.shortcuts import render, redirect
+from .forms import TopicForm  # Import the new submission form
+...
+##
+# Create using POST routes
+#
+def new_topic(request):
+    # Request is initially a GET for the form page itself
+    """Create a new Topic"""
+    if request.method != "POST":
+        # Load a blank form (no TopicForm arguments)
+        form = TopicForm()
+    else:
+        # POST request on form submit
+        # Pass the TopicForm request.POST user input
+        form = TopicForm(data=request.POST)
+        # Process the input. is_valid() checks for:
+        #   required fields (default is all)
+        #   models.py constraints (e.g. type, character limit)
+        if form.is_valid():
+            form.save() # write to the database
+            return redirect("notes:topics") # forward to view the Topics page
+
+    # Show the initial input form, or handle invalid input indicators
+    context = {"form": form}
+    # Store the form in the context dictionary to pass it along to the template
+    return render(request, "notes/new_topic.html", context)
+```
+### Add add a New Topics template
+Create a template: <app_name>/templates/<app_name>/new_topic.html
+```html
+<!-- 'extends' the parent template it inherits from //-->
+{% extends "notes/base.html" %} {% block content %}
+<p>Add a new topic:</p>
+<!--
+  Create the form:
+  action: send the form data to the new_topic() view function
+  method: submit the data as a POST
+//-->
+<form action="{% url 'notes:new_topic' %}" method="post">
+  <!-- csrf_token: prevent cross-site forgery attacks //-->
+  {% csrf_token %}
+  <!-- Django can automatically handle displaying the fields as div entries //-->
+  {{form.as_div}}
+  <!-- the form submit button //-->
+  <button name="submit">Add</button>
+</form>
+{% endblock content%}
+```
+### Add a link for the New Topics form
+(Update: <app_name>/templates/<app_name>/topics.html)
+```html
+...
+</ul>
+<a href="{% url 'notes:new_topic' %}">Add a new topic</a>
+{% endblock content %}
 ```

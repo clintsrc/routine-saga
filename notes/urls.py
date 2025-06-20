@@ -16,8 +16,12 @@ urlpatterns = [
     # name="index": a name/alias for this route (useful for reverse lookups)
     path("", views.index, name="index"),
     # Any additional pages available for this app...
-    # Topics list
+    # Show Topics list
     path("topics/", views.topics, name="topics"),
-    # Topic details by its id (e.g. http://<app_name>/topics/1/)
+    # Show Topic details by its id (e.g. http://<app_name>/topics/1/)
     path("topics/<int:topic_id>/", views.topic, name="topic"),
+    # Create a new topic
+    path("new_topic/", views.new_topic, name="new_topic"),
+    # Create a new topic entry
+    path("new_entry/<int:topic_id>/", views.new_entry, name="new_entry"),
 ]

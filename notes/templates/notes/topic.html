@@ -5,6 +5,7 @@
 {% block content %}
 <p>Topic: {{topic.text}}</p>
 <p>Entries:</p>
+<p><a href="{% url 'notes:new_entry' topic.id %}">Add new entry</a></p>
 <!-- Use a for loop to populate an unordered list from the context dictionary
     which contains the topic entries queried from the database //-->
 <ul>
