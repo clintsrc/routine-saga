@@ -1,5 +1,10 @@
 # Python Project Environment Setup (with pyenv and venv)
 
+## NOTE
+* Issue: runtime errors
+* Soln: When you add/rename functions, classes, or files (especially views.py or
+forms.py) be sure to restart the server and test it again before going deeper
+
 ## Setup the environment
 
 ### 1. Set the Python Version (with pyenv)
@@ -240,8 +245,8 @@ Then open: http://localhost:8000
 
 <!-- Create a link using the index alias in the urls.py file -->
 <p>
-  <a href="{% url 'notes:index' %}">App Name</a> -
-  <a href="{% url 'notes:topics' %}">Topics</a>
+  <a href="{% url '<app_name>:index' %}">App Name</a> -
+  <a href="{% url '<app_name>:topics' %}">Topics</a>
 </p>
 
 <!-- The child template will define what is rendered here as needed -->
@@ -270,7 +275,7 @@ Then open: http://localhost:8000
 
 ```html
 <!-- 'extends' the parent template it inherits from //-->
-{% extends 'notes/base.html' %}
+{% extends '<app_name>/base.html' %}
 
 <!-- Specify the content block //-->
 {% block content %}
@@ -304,7 +309,6 @@ urlpatterns = [
 ```
 
 #### Add the topic page view:
-
 (Update: <app_name>/views.py)
 
 ```python
@@ -368,25 +372,25 @@ def new_topic(request):
         #   models.py constraints (e.g. type, character limit)
         if form.is_valid():
             form.save() # write to the database
-            return redirect("notes:topics") # forward to view the Topics page
+            return redirect("<app_name>:topics") # forward to view the Topics page
 
     # Show the initial input form, or handle invalid input indicators
     context = {"form": form}
     # Store the form in the context dictionary to pass it along to the template
-    return render(request, "notes/new_topic.html", context)
+    return render(request, "<app_name>/new_topic.html", context)
 ```
 ### Add add a New Topics template
 Create a template: <app_name>/templates/<app_name>/new_topic.html
 ```html
 <!-- 'extends' the parent template it inherits from //-->
-{% extends "notes/base.html" %} {% block content %}
+{% extends "<app_name>/base.html" %} {% block content %}
 <p>Add a new topic:</p>
 <!--
   Create the form:
   action: send the form data to the new_topic() view function
   method: submit the data as a POST
 //-->
-<form action="{% url 'notes:new_topic' %}" method="post">
+<form action="{% url '<app_name>:new_topic' %}" method="post">
   <!-- csrf_token: prevent cross-site forgery attacks //-->
   {% csrf_token %}
   <!-- Django can automatically handle displaying the fields as div entries //-->
@@ -401,6 +405,89 @@ Create a template: <app_name>/templates/<app_name>/new_topic.html
 ```html
 ...
 </ul>
-<a href="{% url 'notes:new_topic' %}">Add a new topic</a>
+<a href="{% url '<app_name>:new_topic' %}">Add a new topic</a>
 {% endblock content %}
+```
+## Add support for entry Updates
+### Add and endpoint for the edit Entry page
+(Update: <app_name>/urls.py)
+```python
+# define all urls for the website
+urlpatterns = [
+    ...
+    # Update an entry
+    path("edit_entry/<int:entry_id>/", views.edit_entry, name="edit_entry"),
+]
+```
+
+### Add add an edit Entry view
+(Update: <app_name>/views.py)
+```python
+##
+# Update routes
+#
+def edit_entry(request, entry_id):
+    """Edit an existing Entry"""
+    entry = Entry.objects.get(id=entry_id)
+    topic = entry.topic
+
+    if request.method != "POST":
+        # Load a blank form (no arguments)
+        # Populate the form with data for the existing entry
+        form = EntryForm(instance=entry)
+    else:
+        # POST request on form submit
+        # Pass the preexisting info modified by the new input data
+        form = EntryForm(instance=entry, data=request.POST)
+        if form.is_valid():
+            # Entry is already associated with the correct topic
+            form.save()  # write to the database
+            # Specify the view for the redirect target and topic_id
+            #   argument
+            topic_id = topic.id
+            return redirect(
+                "<app_name>:topic", topic_id=topic_id
+            )  # forward to view the Entry page
+    context = {"entry": entry, "topic": topic, "form": form}
+    return render(request, "<app_name>/edit_entry.html", context)
+```
+
+### Add add an edit Entry template
+Create a template: <app_name>/templates/<app_name>/edit_entry.html
+```html
+<!-- 'extends' the parent template it inherits from //-->
+{% extends "<app_name>/base.html" %} {% block content %}
+<!-- Show the topic and link back to main page //-->
+<p><a href="{% url '<app_name>:topic' topic.id %}">{{topic}}</a></p>
+<p>Add a new entry:</p>
+<!--
+  Create the form:
+  action: send the form data to the new_entry() view function and the
+    associated topic id
+  method: submit the data as a POST
+//-->
+<form action="{% url '<app_name>:new_entry' topic.id %}" method="post">
+  <!-- csrf_token: prevent cross-site forgery attacks //-->
+  {% csrf_token %}
+  <!-- Django can automatically handle displaying the fields as div entries //-->
+  {{form.as_div}}
+  <!-- the form submit button //-->
+  <button name="submit">Add</button>
+</form>
+{% endblock content%}
+```
+
+
+### Add the edit entry link in the Topic page:
+(Update): <app_name>/templates/<app_name>/topic.html
+```html
+...
+  <!-- Django uses the | operator to format the data field output //-->
+  <li>
+    <p>{{entry.date_added|date:'M d, Y H:i'}}</p>
+    <!-- linebreaks will handle the necessary html <br> breaks //-->
+    <p>{{entry.text|linebreaks}}</p>
+    <p><a href="{% url 'notes:edit_entry' entry.id %}">Edit entry</a></p>
+  </li>
+...
 ```
