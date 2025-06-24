@@ -66,8 +66,9 @@ urlpatterns = [
 pip install -r requirements.txt
 ```
 1. Start Command:
+NOTE: the checked-in migrations must be applied to the production database
 ```bash
-python manage.py runserver 0.0.0.0:$PORT
+python manage.py migrate && python manage.py runserver 0.0.0.0:$PORT
 ```
 1. Set the Environment variables, e.g.:
 ```env
@@ -75,12 +76,20 @@ DJANGO_SECRET_KEY=<password>   # openssl rand -base64 50, (strip the trailing =)
 DJANGO_ALLOWED_HOSTS=https://<app_name>.onrender.com
 ```
 ## Issue: New user registration fails:
+```bash
 Forbidden (403)
 CSRF verification failed. Request aborted.
-## Soln(?): TODO:
-Cross-Site Request Forgery: Django blocks if CSRF is not properly configured
-See updates to core/settings.py and .env.EXAMPLE
-
+```
+## Soln: Cross-Site Request Forgery: Django blocks if CSRF is not properly configured
+Add another env variable to core/settings.py:
+```python
+CSRF_TRUSTED_ORIGINS = os.environ.get("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",")
+```
+(see .env.EXAMPLE for the local dev environment)
+Production:
+```bash
+CSRF_TRUSTED_ORIGINS = https://<app_name>.onrender.com
+```
 
 
 ## Configure GitHub Actions Builds

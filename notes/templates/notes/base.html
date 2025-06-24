@@ -18,8 +18,7 @@
   <hr/>
   <form action="{% url 'accounts:logout' %}" method="post">
   {% csrf_token %}
-  <!-- View sends a form object to the to the template to be displayed -->
-  {{form.as_div}}
+  <!-- Log out post doesn't need (shouldn't have) a form -->
   <button name="submit">Log out</button>
   </form>
 {% endif %}
