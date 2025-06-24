@@ -4,7 +4,21 @@
 <p>
   <a href="{% url 'notes:index' %}">Routine Notes</a> -
   <a href="{% url 'notes:topics' %}">Topics</a>
+  {% if user.is_authenticated %}
+  <p>{{user.username}}</p>
+  {% else %}
+  <a href="{% url 'accounts:login' %}">Login</a>
+  {% endif %}
 </p>
 
 <!-- The child template will define what is rendered here as needed -->
 {% block content %} {% endblock content %}
+  {% if user.is_authenticated %}
+  <hr/>
+  <form action="{% url 'accounts:logout' %}" method="post">
+  {% csrf_token %}
+  <!-- View sends a form object to the to the template to be displayed -->
+  {{form.as_div}}
+  <button name="submit">Log out</button>
+  </form>
+{% endif %}

@@ -1,0 +1,17 @@
+<!-- Make the UI will have the same look and feel -->
+{% extends 'notes/base.html' %}
+
+<!-- Show an error if the form.errors attribute is set -->
+{% block content %} {% if form.errors %}
+<p>Your username and password do not match</p>
+{% endif %}
+
+<!-- Process the form with the login view -->
+<form action="{% url 'accounts:login' %}" method="post">
+  {% csrf_token %}
+  <!-- View sends a form object to the to the template to be displayed -->
+  {{form.as_div}}
+  <button name="submit">Login</button>
+</form>
+
+{% endblock content %}

@@ -101,6 +101,8 @@ INSTALLED_APPS = [
 
 ```bash
 # generate translate the data model to a 'sql script' (0001_initial.py)
+# if the server is running shut it down
+$ cd <project_root>
 $ python manage.py makemigrations <app_name>
 # Apply the changes to the database
 $ python manage.py migrate
@@ -111,7 +113,10 @@ $ python manage.py migrate
 1. Create a superuser:
 
 ```bash
-   python manage.py createsuperuser
+# if the server is running shut it down
+$ cd <project_root>
+$ python manage.py createsuperuser
+# input a username and pssword (the email can be empty)
 
 ```
 
