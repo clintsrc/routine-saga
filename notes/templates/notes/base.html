@@ -2,12 +2,13 @@
 
 <!-- Create a link using the index alias in the urls.py file -->
 <p>
-  <a href="{% url 'notes:index' %}">Routine Notes</a> -
-  <a href="{% url 'notes:topics' %}">Topics</a>
+  <a href="{% url 'notes:index' %}">Routine Notes</a>
+   - <a href="{% url 'notes:topics' %}">Topics</a>
   {% if user.is_authenticated %}
-  <p>{{user.username}}</p>
+  <p>Logged in as: {{user.username}}</p>
   {% else %}
-  <a href="{% url 'accounts:login' %}">Login</a>
+   - <a href="{% url 'accounts:login' %}">Login</a>
+   - <a href="{% url 'accounts:register' %}">Register</a>
   {% endif %}
 </p>
 
