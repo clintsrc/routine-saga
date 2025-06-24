@@ -74,6 +74,14 @@ python manage.py runserver 0.0.0.0:$PORT
 DJANGO_SECRET_KEY=<password>   # openssl rand -base64 50, (strip the trailing =)
 DJANGO_ALLOWED_HOSTS=https://<app_name>.onrender.com
 ```
+## Issue: New user registration fails:
+Forbidden (403)
+CSRF verification failed. Request aborted.
+## Soln(?): TODO:
+Cross-Site Request Forgery: Django blocks if CSRF is not properly configured
+See updates to core/settings.py and .env.EXAMPLE
+
+
 
 ## Configure GitHub Actions Builds
 .github/workflows/build.yml
