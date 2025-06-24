@@ -39,6 +39,7 @@ ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost").split(",")
 INSTALLED_APPS = [
     # user apps
     "notes",
+    "accounts",
     # core apps
     "django.contrib.admin",
     "django.contrib.auth",
@@ -129,3 +130,7 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# user settings
+LOGIN_REDIRECT_URL = 'notes:index'
+LOGOUT_REDIRECT_URL = 'notes:index'

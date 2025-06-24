@@ -29,6 +29,8 @@ def home_view(request):
 urlpatterns = [
     # all urls specifically available for the admin site
     path("admin/", admin.site.urls),
+    # all urls specifically available for the accounts app site
+    path("accounts/", include("accounts.urls")),
     # all urls specifically available for the main app site
     path("", include("notes.urls")),
 ]
