@@ -115,12 +115,12 @@ LOGIN_REDIRECT_URL = '<app_name>:index'
 
 <!-- Create a link using the index alias in the urls.py file -->
 <p>
-  <a href="{% url 'notes:index' %}">Routine Notes</a> -
-  <a href="{% url 'notes:topics' %}">Topics</a>
+  <a href="{% url 'notes:index' %}">Routine Notes</a>
+   - <a href="{% url 'notes:topics' %}">Topics</a>
   {% if user.is_authenticated %}
   <p>{{user.username}}</p>
   {% else %}
-  <a href="{% url 'accounts:login' %}">Login</a>
+   - <a href="{% url 'accounts:login' %}">Login</a>
   {% endif %}
 </p>
 
@@ -162,3 +162,80 @@ LOGOUT_REDIRECT_URL = '<app_name>:index'
    2. You should be redirected to the Home page
 
 ## Setup New User Registration
+### Add the registration endpoint
+Update: accounts/urls.py
+
+```python
+...
+urlpatterns = [
+    ...
+    # User Registration
+    path("register/", views.register, name='register'),
+]
+```
+### Add a view function
+Update: accounts/views.py
+```python
+
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
+
+# Bring in the locally defined views
+from . import views
+
+def register(request):
+    """New User registration"""
+    if request.method != "POST":
+        # Present the blank form to the user
+        form = UserCreationForm()
+    else:
+        # Recieved contents of form
+        form = UserCreationForm(data=request.POST)
+
+        if form.is_valid():
+            # Save the user and encrypted password to the database
+            new_user = form.save()
+            # Login the new user using the credentials provided
+            #   directly in the request
+            login(request, new_user)
+            # Forward to the home page
+            return redirect("notes:index")
+
+    # Show initial blank form or if the input is invalid
+    context = {"form": form}
+    return render(request, "registration/register.html", context)
+```
+
+### Create a registration Template page
+Create: accounts/templates/registration/register.html
+
+```html
+<!-- Make the UI will have the same look and feel -->
+{% extends 'notes/base.html' %}
+
+<!-- Show an error if the form.errors attribute is set -->
+{% block content %}<!-- Process the form with the login view -->
+<form action="{% url 'accounts:register' %}" method="post">
+  {% csrf_token %}
+  <!-- View sends a form object to the to the template to be displayed -->
+  {{form.as_div}}
+  <button name="submit">Register</button>
+</form>
+
+{% endblock content %}
+```
+### Update the base template to show the registration link on every page (when not logged in)
+(Update <app_name>/templates/<app_name>/base.html)
+
+```html
+...
+  {% if user.is_authenticated %}
+  <p>{{user.username}}</p>
+  {% else %}
+   - <a href="{% url 'accounts:login' %}">Login</a>
+   - <a href="{% url 'accounts:register' %}">Register</a>
+  {% endif %}
+...
+
+```

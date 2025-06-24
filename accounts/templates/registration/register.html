@@ -1,0 +1,13 @@
+<!-- Make the UI will have the same look and feel -->
+{% extends 'notes/base.html' %}
+
+<!-- Show an error if the form.errors attribute is set -->
+{% block content %}<!-- Process the form with the login view -->
+<form action="{% url 'accounts:register' %}" method="post">
+  {% csrf_token %}
+  <!-- View sends a form object to the to the template to be displayed -->
+  {{form.as_div}}
+  <button name="submit">Register</button>
+</form>
+
+{% endblock content %}

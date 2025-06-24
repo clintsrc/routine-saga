@@ -4,6 +4,9 @@ URL configuration for the accounts app (login page).
 
 from django.urls import path, include
 
+# Bring in the locally defined views
+from . import views
+
 # Unique name helps Django to identify this specific urls.py
 app_name = "accounts"
 
@@ -14,4 +17,6 @@ urlpatterns = [
     # django urls provide 'accounts/login' and 'accounts/logout' urls
     path("", include("django.contrib.auth.urls")),
     # Any additional pages available for this app...
+    # User Registration
+    path("register/", views.register, name="register"),
 ]
