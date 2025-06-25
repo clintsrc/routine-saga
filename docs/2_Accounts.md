@@ -348,7 +348,6 @@ user that doesn't own it
 #### Protecting Access (block Direct URL access)
 Prevent direct URL access to endpoints by adding checks to the view functions
 1. Update: <app_name>/views.py
-Add the .filter(owner=request.user) member:
 ```python
 ...
 from django.http import Http404
@@ -360,5 +359,31 @@ def topic(request, topic_id):
     # Check whether the currnt user has access
     if topic.owner != request.user:
         raise Http404
+...
+```
+#### Associate New Topics to the Current User
+Use the current user information included in the request object
+1. Update: <app_name>/views.py
+```python
+...
+@login_required
+def new_topic(request):
+    ...
+    else:
+        # POST request on form submit
+        # Pass the TopicForm request.POST user input
+        form = TopicForm(data=request.POST)
+        # Process the input. is_valid() checks for:
+        #   required fields (default is all)
+        #   models.py constraints (e.g. type, character limit)
+        if form.is_valid():
+            # XXX before saving it:
+            # Create new topic but don't save it yet
+            new_topic = form.save(commit=False)
+            # Change the form first: set the owner
+            new_topic.owner = request.user
+            new_topic.save()  # write to the database
+
+            return redirect("notes:topics")  # forward to view the Topics page
 ...
 ```

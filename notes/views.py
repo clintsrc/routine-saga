@@ -65,7 +65,13 @@ def new_topic(request):
         #   required fields (default is all)
         #   models.py constraints (e.g. type, character limit)
         if form.is_valid():
-            form.save()  # write to the database
+            # XXX before saving it:
+            # Create new topic but don't save it yet
+            new_topic = form.save(commit=False)
+            # Change the form first: set the owner
+            new_topic.owner = request.user
+            new_topic.save()  # write to the database
+
             return redirect("notes:topics")  # forward to view the Topics page
 
     # Show the initial input form, or handle invalid input indicators
