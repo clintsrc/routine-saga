@@ -1,24 +1,93 @@
-<!-- use a template tag: {'% %'} //-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!-- reactive styling -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Routine Saga</title>
 
-<!-- Create a link using the index alias in the urls.py file -->
-<p>
-  <a href="{% url 'notes:index' %}">Routine Notes</a>
-   - <a href="{% url 'notes:topics' %}">Topics</a>
-  {% if user.is_authenticated %}
-  <p>Logged in as: {{user.username}}</p>
-  {% else %}
-   - <a href="{% url 'accounts:login' %}">Login</a>
-   - <a href="{% url 'accounts:register' %}">Register</a>
-  {% endif %}
-</p>
+    <!-- use a template tag: {'% %'} //-->
+    {% load django_bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %}
+  </head>
 
-<!-- The child template will define what is rendered here as needed -->
-{% block content %} {% endblock content %}
-  {% if user.is_authenticated %}
-  <hr/>
-  <form action="{% url 'accounts:logout' %}" method="post">
-  {% csrf_token %}
-  <!-- Log out post doesn't need (shouldn't have) a form -->
-  <button name="submit">Log out</button>
-  </form>
-{% endif %}
+  <body>
+    <nav class="navbar navbar-expand-md navbar-light bg-light mb-4 border">
+      <!-- begin container-->
+      <div class="container-fluid">
+        <!-- Create a link using the index alias in the urls.py file -->
+        <a class="navbar-brand" href="{% url 'notes:index' %}">Routine Notes</a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collaps"
+          data-bs-target="#navbarCollapse"
+          aria-controls="navbarCollapse"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Begin collapsible menu-->
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <!-- Topics -->
+          <ul class="navbar-nav me-auto mb-2 mb-md-0">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'notes:topics' %}">Topics</a>
+            </li>
+          </ul>
+
+          <!-- begin Account links -->
+          <ul class="navbar-nav ms-auto mb-2 mb-md-0">
+            {% if user.is_authenticated %}
+
+            <li class="nav-item">
+              <span class="navbar-text me-2"
+                >Logged in as: {{user.username}}
+              </span>
+            </li>
+
+            {% else %}
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'accounts:login' %}"> Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'accounts:register' %}">
+                Register</a
+              >
+            </li>
+
+            {% endif %}
+          </ul>
+
+          {% if user.is_authenticated %}
+
+          <form action="{% url 'accounts:logout' %}" method="post">
+            {% csrf_token %}
+            <!-- Log out post doesn't need (shouldn't have) a form -->
+            <button name="submit" class="btn btn-outline-secondary btn-sm">
+              Log out
+            </button>
+          </form>
+
+          {% endif %}
+        </div>
+        <!-- End collapsible menu -->
+      </div>
+      <!-- End container -->
+    </nav>
+
+    <main class="container">
+      <div class="pb-2 mb-2 border-bottom">
+        {% block page_header %} {% endblock page_header %}
+      </div>
+
+      <div>
+        <!-- The child template will define what is rendered here as needed -->
+        {% block content %} {% endblock content %}
+      </div>
+    </main>
+  </body>
+</html>

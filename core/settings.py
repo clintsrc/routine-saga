@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     # user apps
     "notes",
     "accounts",
+    # 3rd party apps
+    "django_bootstrap5",
     # core apps
     "django.contrib.admin",
     "django.contrib.auth",
