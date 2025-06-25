@@ -2,17 +2,22 @@
 {% extends 'notes/base.html' %}
 
 <!-- Specify the content block //-->
+{% block page_header %}
+<h1>Topics</h1>
+{% endblock page_header %}
+
 {% block content %}
-<p>Topics</p>
+
 <!-- Use a for loop to populate an unordered list from the context dictionary
     which contains the topics queried from the database //-->
-<ul>
+<ul class="list-group border-bottom pb-2 mb-4"">
   {% for topic in topics %}
   <!-- Double brace for variable interplation //-->
-  <li><a href="{% url 'notes:topic' topic.id %}">{{topic.text}}</a></li>
+  <li class="list-group-item border-0">
+    <a href="{% url 'notes:topic' topic.id %}">{{topic.text}}</a></li>
   <!-- Handle and empty query result //-->
   {% empty %}
-  <li>No topics have been added yet.</li>
+  <li class="list-group-item border-0">No topics have been added yet.</li>
   {% endfor %}
 </ul>
 <a href="{% url 'notes:new_topic' %}">Add a new topic</a>

@@ -65,3 +65,37 @@ Update <app_name>/templates/notes/base.html:
 </body>
 </html>
 ```
+
+1. Add 'jumbotron', a large box that stands out on the main page. Add styling to
+the index.html
+
+Update <app_name>/templates/notes/index.html:
+
+```html
+<!-- 'extends' the parent template it inherits from //-->
+{% extends 'notes/base.html' %}
+
+<!-- Specify the content block //-->
+{% block page_header %}
+<div class="p-3 mb-4 bg-light border rounded-3">
+  <div class="container-fluid py-4">
+    <h1 class="display-3">Capture notes in your daily routine.</h1>
+    <p class="lead">
+      Routine Saga is a note-taking app for any topic you want to pursue,
+      especially for major undertakings for your betterment.
+    </p>
+    <a class="btn btn-primary btn-lg mt-1" href="{% url 'accounts:register' %}"
+      >Register &raquo;</a
+    >
+  </div>
+</div>
+
+<!-- Specify the content block //-->
+{% endblock page_header %}
+```
+
+1. Style the remaining pages:
+
+accounts/templates/registration/login.html (see the code)
+<project_root>/templates/<app_name>/topics.html (see the code)
+<project_root>/templates/<app_name>/topic.html (see the code)
