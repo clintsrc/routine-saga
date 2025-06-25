@@ -51,6 +51,7 @@ urlpatterns = [
     path("", include("<app_name>.urls")),
 ]
 ```
+
 ## Setup a Login page
 
 Create: accounts/urls.py
@@ -81,22 +82,24 @@ Create: accounts/templates/registration/login.html
 
 ```html
 <!-- Make the UI will have the same look and feel -->
-{% extends '<app_name>/base.html' %}
+{% extends '<app_name
+  >/base.html' %}
 
-<!-- Show an error if the form.errors attribute is set -->
-{% block content %} {% if form.errors %}
-<p>Your username and password do not match</p>
-{% endif %}
+  <!-- Show an error if the form.errors attribute is set -->
+  {% block content %} {% if form.errors %}
+  <p>Your username and password do not match</p>
+  {% endif %}
 
-<!-- Process the form with the login view -->
-<form action="{% url 'accounts:login' %}" method="post">
-  {% csrf_token %}
-  <!-- View sends a form object to the to the template to be displayed -->
-  {{form.as_div}}
-  <button name="submit">Login</button>
-</form>
+  <!-- Process the form with the login view -->
+  <form action="{% url 'accounts:login' %}" method="post">
+    {% csrf_token %}
+    <!-- View sends a form object to the to the template to be displayed -->
+    {{form.as_div}}
+    <button name="submit">Login</button>
+  </form>
 
-{% endblock content %}
+  {% endblock content %}</app_name
+>
 ```
 
 ### Redirect a successful login
@@ -128,26 +131,27 @@ LOGIN_REDIRECT_URL = '<app_name>:index'
 {% block content %} {% endblock content %}
 
 ```
+
 ### Test it out
-   1. First log out of your admin account: http://localhost:8000/admin
-   1. Login as a user: http://localhost:8000/accounts/login
+
+1.  First log out of your admin account: http://localhost:8000/admin
+1.  Login as a user: http://localhost:8000/accounts/login
 
 ## Setup a Log out page (the form uses POST)
+
 ### Update the base template to show the login on every page: <app_name>/templates/<app_name>/base.html
 
 ```html
-...
-{% block content %} {% endblock content %}
-  {% if user.is_authenticated %}
-  <hr/>
-  <form action="{% url 'accounts:logout' %}" method="post">
-  {% csrf_token %}
-  {% csrf_token %}
+... {% block content %} {% endblock content %} {% if user.is_authenticated %}
+<hr />
+<form action="{% url 'accounts:logout' %}" method="post">
+  {% csrf_token %} {% csrf_token %}
   <!-- Log out post doesn't need (shouldn't have) a form -->
   <button name="submit">Log out</button>
-  </form>
+</form>
 {% endif %}
 ```
+
 ### Add a redirect for the logout
 
 (Update core/settings.py -- add to the end of the file:)
@@ -157,12 +161,16 @@ LOGIN_REDIRECT_URL = '<app_name>:index'
 LOGIN_REDIRECT_URL = '<app_name>:index'
 LOGOUT_REDIRECT_URL = '<app_name>:index'
 ```
+
 ### Test it out
-   1. Click the Log out button
-   2. You should be redirected to the Home page
+
+1.  Click the Log out button
+2.  You should be redirected to the Home page
 
 ## Setup New User Registration
+
 ### Add the registration endpoint
+
 Update: accounts/urls.py
 
 ```python
@@ -173,8 +181,11 @@ urlpatterns = [
     path("register/", views.register, name='register'),
 ]
 ```
+
 ### Add a view function
+
 Update: accounts/views.py
+
 ```python
 
 from django.shortcuts import render, redirect
@@ -208,6 +219,7 @@ def register(request):
 ```
 
 ### Create a registration Template page
+
 Create: accounts/templates/registration/register.html
 
 ```html
@@ -225,17 +237,111 @@ Create: accounts/templates/registration/register.html
 
 {% endblock content %}
 ```
+
 ### Update the base template to show the registration link on every page (when not logged in)
+
 (Update <app_name>/templates/<app_name>/base.html)
 
 ```html
-...
-  {% if user.is_authenticated %}
-  <p>{{user.username}}</p>
-  {% else %}
-   - <a href="{% url 'accounts:login' %}">Login</a>
-   - <a href="{% url 'accounts:register' %}">Register</a>
-  {% endif %}
-...
-
+... {% if user.is_authenticated %}
+<p>{{user.username}}</p>
+{% else %} - <a href="{% url 'accounts:login' %}">Login</a> -
+<a href="{% url 'accounts:register' %}">Register</a>
+{% endif %} ...
 ```
+
+## Restrict Access
+
+Add the @login_required decorator to the page. When an unauthenticated user tries
+to access it, Django will redirect them to a URL (usually the login page) specified by
+settings.py's LOGIN_URL.
+
+Add @login_required to each view where you want to restrict access
+
+1. Update: <app_name>/views.py
+
+```python
+...
+from django.contrib.auth.decorators import login_required
+...
+# Decorator restricts access to authenticated users, by running
+#   login_required() before topics()
+@login_required
+...
+```
+
+1. Update core/settings.py to redirect to the login page:
+
+```python
+# user settings
+...
+LOGIN_URL = 'accounts:login'
+```
+## Private Data
+Restrict each user's data to that user
+1. Update the database model: the app data needs a foreign key to relate to the user
+1. Migrate the database
+1. Update views to only show the data associated with the logged-in user
+
+### Update the model
+Update <app_name>/models.py:
+```python
+...
+from django.contrib.auth.models import User
+...
+class Topic(models.Model):
+    date_added = models.DateTimeField(auto_now_add=True)
+    # The owner sets a foreign key relationship to the User model
+    # on_delete ensures that if a user is deleted, all the
+    #   user's associated data is also removed
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+...
+```
+### Migrate the database
+The migrate command needs to know which existing user gets the existing app data.
+This associates the data to the user but it will not restrict it. That will be
+addressed after the migration.
+#### Viewing existing users in the database
+You can view existing users from the shell. You import the auth models (same as the
+import linen models.py), then calling: User.objects.all().
+```bash
+$ python manage.py shell
+>>> from django.contrib.auth.models import User
+>>> User.objects.all()
+<QuerySet [<User: app_admin>, <User: app_user>]>
+>>> quit()
+```
+#### Migrate
+Here's the shell command to perform the migration
+```bash
+$ python manage.py makemigrations <app_name>
+[The promt indicates you must specify the data owner...]
+1) Provide a one-off default now (will be set on all existing rows with a null value for this column)
+...
+Select an option: 1
+Please enter the default value now, as valid Python.
+The datetime [...]
+>>> 1
+>>> quit()
+```
+Apply the migration:
+```bash
+$ python manage.py migrate
+```
+NOTE:
+To delete the database and start fresh, you can use:
+```bash
+$ python manage.py flush
+```
+#### Restricting User Access
+1. Update: <app_name>/views.py
+Add the .filter(owner=request.user) member:
+```python
+...
+    # Retrieve only the objects from the database where the owner attribute
+    #   matches the current user.
+    topics = Topic.objects.filter(owner=request.user).order_by("date_added")
+...
+```
+1. Test it by logging in as the user with access to view the data, and as another
+user that doesn't own it

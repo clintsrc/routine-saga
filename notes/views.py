@@ -1,6 +1,7 @@
 # pylint: disable=no-member
 # Import redirect to forward from new_topic to the topic page on submit
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 
 from .models import Topic, Entry
 from .forms import TopicForm, EntryForm  # Import the new submission form
@@ -15,15 +16,21 @@ def index(request):
     return render(request, "notes/index.html")
 
 
+# Decorator restricts access to authenticated users, by running
+#   login_required() before topics()
+@login_required
 def topics(request):
     """Topics page"""
-    # query the database for the Topics, sort by date
-    topics = Topic.objects.order_by("date_added")
+    # Query the database for the Topics, sort by date
+    # Retrieve only the objects from the database where the owner attribute
+    #   matches the current user.
+    topics = Topic.objects.filter(owner=request.user).order_by("date_added")
     # define the context (here a dictionary)
     context = {"topics": topics}
     return render(request, "notes/topics.html", context)
 
 
+@login_required
 def topic(request, topic_id):
     """Show single topic list the entries"""
     # query the database for the Topics, sort by date
@@ -39,6 +46,7 @@ def topic(request, topic_id):
 ##
 # Create using POST routes
 #
+@login_required
 def new_topic(request):
     # Request is initially a GET for the form page itself
     """Create a new Topic"""
@@ -62,6 +70,7 @@ def new_topic(request):
     return render(request, "notes/new_topic.html", context)
 
 
+@login_required
 def new_entry(request, topic_id):
     """Create a new Entry for a Topic"""
     # pass the topic's id number
@@ -98,6 +107,7 @@ def new_entry(request, topic_id):
 ##
 # Update routes
 #
+@login_required
 def edit_entry(request, entry_id):
     """Edit an existing Entry"""
     entry = Entry.objects.get(id=entry_id)
