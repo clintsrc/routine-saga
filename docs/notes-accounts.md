@@ -345,3 +345,20 @@ Add the .filter(owner=request.user) member:
 ```
 1. Test it by logging in as the user with access to view the data, and as another
 user that doesn't own it
+#### Protecting Access (block Direct URL access)
+Prevent direct URL access to endpoints by adding checks to the view functions
+1. Update: <app_name>/views.py
+Add the .filter(owner=request.user) member:
+```python
+...
+from django.http import Http404
+...
+@login_required
+def topic(request, topic_id):
+    ...
+    topic = Topic.objects.get(id=topic_id)
+    # Check whether the currnt user has access
+    if topic.owner != request.user:
+        raise Http404
+...
+```

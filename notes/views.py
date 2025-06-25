@@ -2,6 +2,7 @@
 # Import redirect to forward from new_topic to the topic page on submit
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.http import Http404
 
 from .models import Topic, Entry
 from .forms import TopicForm, EntryForm  # Import the new submission form
@@ -35,6 +36,9 @@ def topic(request, topic_id):
     """Show single topic list the entries"""
     # query the database for the Topics, sort by date
     topic = Topic.objects.get(id=topic_id)
+    # Check whether the currnt user has access
+    if topic.owner != request.user:
+        raise Http404
     # desc order (newest first)
     entries = topic.entry_set.order_by("-date_added")
     # store query results in a dictionary
@@ -112,6 +116,9 @@ def edit_entry(request, entry_id):
     """Edit an existing Entry"""
     entry = Entry.objects.get(id=entry_id)
     topic = entry.topic
+    # Check whether the currnt user has access
+    if topic.owner != request.user:
+        raise Http404
 
     if request.method != "POST":
         # Load a blank form (no arguments)
