@@ -361,7 +361,7 @@ def topic(request, topic_id):
         raise Http404
 ...
 ```
-#### Associate New Topics to the Current User
+#### Associate New Topics to the Logged in User
 Use the current user information included in the request object
 1. Update: <app_name>/views.py
 ```python
@@ -387,3 +387,5 @@ def new_topic(request):
             return redirect("notes:topics")  # forward to view the Topics page
 ...
 ```
+#### Seed the database
+TODO

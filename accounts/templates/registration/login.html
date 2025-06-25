@@ -3,7 +3,7 @@
 
 <!-- Show an error if the form.errors attribute is set -->
 {% block content %} {% if form.errors %}
-<p>Your username and password do not match</p>
+<p>Your username and password do not match. Please try again or <a href="{% url 'accounts:register' %}">register</a> an account.</p>
 {% endif %}
 
 <!-- Process the form with the login view -->
