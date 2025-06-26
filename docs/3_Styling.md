@@ -97,5 +97,33 @@ Update <app_name>/templates/notes/index.html:
 1. Style the remaining pages:
 
 accounts/templates/registration/login.html (see the code)
-<project_root>/templates/<app_name>/topics.html (see the code)
-<project_root>/templates/<app_name>/topic.html (see the code)
+<project_root>/<app_name>/templates/<app_name>/topics.html (see the code)
+<project_root>/<app_name>/templates/<app_name>/topic.html (see the code)
+
+1. Custom Error Pages
+
+Create a project-level templates folder to store global templates. Create the 404 and
+404 error template files there (see the source files):
+<project_root>/templates/<app_name>/404.html
+<project_root>/templates/<app_name>/500.html
+
+1. Configure Django to use the <project_root>/template directory:
+Update core/settings.py
+
+```python
+...
+TEMPLATES = [
+    {
+        "BACKEND": "...",
+        "DIRS": [BASE_DIR / 'templates'],
+        ...
+    }
+...
+```
+
+#### Testing
+
+1. Temporarily set DEBUG=True in the .env
+1. For 404, try a known invalid URL, eg: <http://localhost:8000/invalid>
+1. For 500, temporarily rename the local database <project_root>/db.sqlite3-invalid
+
