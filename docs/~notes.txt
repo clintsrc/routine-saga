@@ -5,7 +5,7 @@ WGSI:
 App server:
    * runserver: a local dev server built into Django (similar to React)
    * gunicorn: a production server package similar to Node.js. It runs the code and manages worker processes in production. Adding gunicorn to WSGI makes it production ready.
-      It can be used in a local dev stack in docker, but you'd want to enable hot-reloading (command: gunicorn myproject.wsgi:application --reload --bind 0.0.0.0:8000)
+      It can be used in a local dev stack in docker, but you'd want to enable hot reloading (command: gunicorn myproject.wsgi:application --reload --bind 0.0.0.0:8000)
 SQL server:
    * SQLite: local dev server, not producton-grade, automatically installed by Django
    * PostgreSQL: typically used in the production environment. It may also be used in the local dev environment instead of SQLite
@@ -15,6 +15,11 @@ Typically you'll want to manage multiple requirements.txt files:
 requirements.txt: the base app requirements
 requirements_dev.txt: additional dev tools (e.g. pettier, lint)
 requirements_prod.txt: production tools (e.g. gunicorn, psycopg2)
+You can add an entry in a requirements file to include another requirements file!
+  requirements_dev.txt -- this would import the app requirements before the dev packages:
+  # Requirements for the Development environment
+  -r requirements.txt
+  black
 
 Configuring gunicorn:
 NOTE: no code change is required because gunicorn communicates through the WSGI that Django provides
@@ -40,22 +45,28 @@ DB_NAME='bookshelter_db'
 DB_USER='postgres'
 DB_PASSWORD='insecure'
 3. core/settings.py
+import dj_database_url
+...
+# Database info
+DB_URL = os.getenv("DB_URL")
+if not DB_URL:
+    DB_NAME = os.getenv("DB_NAME", "routinesaga_db")
+    DB_USER = os.getenv("DB_USER", "my_default_user")
+    DB_PASSWORD = os.getenv("DB_PASSWORD", "my_default_password")
+    DB_HOST = os.getenv("DB_HOST", "localhost")
+    DB_PORT = os.getenv("DB_PORT", "5432")
+    DB_URL = f"postgres://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+...
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": DB_NAME,
-        "USER": DB_USER,
-        "PASSWORD": DB_PASSWORD,
-        "HOST": DB_HOST,
-        "PORT": DB_PORT,
-    }
+    "default": dj_database_url.parse(DB_URL, conn_max_age=600),
 }
+
 4. psql -U postgres -f db/schema.sql
 5. python manage.py migrate
-6. python manage.py runserver
+6. python manage.py runserver  # the dev server will use the postgres server
 
 - Prod:
-1. Create database using External URL:
+1. Create database using the <External Database URL>:
 Connect to default db then create the new one
 psql "postgresql://bookshelter_user:PWxxxxxxxxxxxxx@dpg-d0vo9kfdiees73f2lgig-a.oregon-postgres.render.com/bookshelter_db" -c "CREATE DATABASE routinesaga_db;"
 2. Update <proj_root>/requirements_prod.txt:
@@ -63,11 +74,19 @@ psql "postgresql://bookshelter_user:PWxxxxxxxxxxxxx@dpg-d0vo9kfdiees73f2lgig-a.o
 gunicorn
 psycopg2
 3. Set the production Environment variables:
-DB_NAME='routinesaga_db'
-DB_USER='<user>'
-DB_PASSWORD='<password>'
+DB_URL='<Internal Database URL>/app_db'
+
 
 Misc/TODO:
-Run runserver locally but configured for my local pgsql (via psycopg2)
-Perhaps later on implement a dockerized dev environment that does the same
-Production: gunicorn (instead of runserver), and pgsql (psycopg2)
+* Update notes elsewhere on using the correct command for: psql "<External Database URL>"
+* Cleanup this very doc (should be .md)
+* Minimal makefile for automatic dev venv install/activate
+* Update .env.EXAMPLE with latest
+* Render blueprint (especially for postgres!)
+  (???) Add health check: Use render.yaml to configure a health check endpoint if needed (?)
+* GitHub workflow build
+* Build (or start) needs (???):
+   python manage.py collectstatic --noinput
+   DJANGO_SETTINGS_MODULE=core.settings / WhiteNoise
+* README.md, add Routine Saga to Portfolio list
+* Implement a dockerized dev environment that uses gunicorn --reload and postgres (container maybe)
