@@ -1,8 +1,3 @@
-requirements_remote.txt:
-# Requirements for live project.
-gunicorn
-psycopg2
-
 
 Server Environment Notes
 WGSI:
@@ -25,7 +20,7 @@ Configuring gunicorn:
 NOTE: no code change is required because gunicorn communicates through the WSGI that Django provides
 NOTE: fcntl is required for gunicorn but it is not supported for Windows/Cygwin
 1. Create a <proj_root>/requirements_prod.txt:
-# Requirements for live project.
+# Requirements for production environment
 gunicorn
 1. Install it in a fresh venv:
 $ python -m pip install --upgrade pip
@@ -38,7 +33,7 @@ Start: gunicorn core.wsgi:application --bind 0.0.0.0:$PORT
 
 
 Configuring PostgreSQL:
-Development:
+- Development:
 1. pip install psycopg2-binary  # precompiled binary for the os
 2. .env
 DB_NAME='bookshelter_db'
@@ -58,6 +53,19 @@ DATABASES = {
 4. psql -U postgres -f db/schema.sql
 5. python manage.py migrate
 6. python manage.py runserver
+
+- Prod:
+1. Create database using External URL:
+Connect to default db then create the new one
+psql "postgresql://bookshelter_user:PWxxxxxxxxxxxxx@dpg-d0vo9kfdiees73f2lgig-a.oregon-postgres.render.com/bookshelter_db" -c "CREATE DATABASE routinesaga_db;"
+2. Update <proj_root>/requirements_prod.txt:
+# Requirements for production environment
+gunicorn
+psycopg2
+3. Set the production Environment variables:
+DB_NAME='routinesaga_db'
+DB_USER='<user>'
+DB_PASSWORD='<password>'
 
 Misc/TODO:
 Run runserver locally but configured for my local pgsql (via psycopg2)

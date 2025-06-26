@@ -1,0 +1,3 @@
+# Requirements for production environment
+gunicorn
+psycopg2
