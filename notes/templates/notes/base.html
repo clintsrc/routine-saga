@@ -20,7 +20,7 @@
         <button
           class="navbar-toggler"
           type="button"
-          data-bs-toggle="collaps"
+          data-bs-toggle="collapse"
           data-bs-target="#navbarCollapse"
           aria-controls="navbarCollapse"
           aria-expanded="false"
@@ -43,20 +43,19 @@
             {% if user.is_authenticated %}
 
             <li class="nav-item">
-              <span class="navbar-text me-2"
-                >Logged in as: {{user.username}}
-              </span>
+              <span class="navbar-text me-2">{{user.username}} </span>
             </li>
 
             {% else %}
 
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'accounts:login' %}"> Login</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'accounts:register' %}">
-                Register</a
+              <a class="nav-link" href="{% url 'accounts:register' %}"
+                >Register</a
               >
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'accounts:login' %}"> Login</a>
             </li>
 
             {% endif %}
@@ -64,7 +63,11 @@
 
           {% if user.is_authenticated %}
 
-          <form action="{% url 'accounts:logout' %}" method="post">
+          <form
+            action="{% url 'accounts:logout' %}"
+            method="post"
+            class="d-flex ms-md-3"
+          >
             {% csrf_token %}
             <!-- Log out post doesn't need (shouldn't have) a form -->
             <button name="submit" class="btn btn-outline-secondary btn-sm">
