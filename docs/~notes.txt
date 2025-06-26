@@ -5,7 +5,7 @@ WGSI:
 App server:
    * runserver: a local dev server built into Django (similar to React)
    * gunicorn: a production server package similar to Node.js. It runs the code and manages worker processes in production. Adding gunicorn to WSGI makes it production ready.
-      It can be used in a local dev stack in docker, but you'd want to enable hot-reloading (command: gunicorn myproject.wsgi:application --reload --bind 0.0.0.0:8000)
+      It can be used in a local dev stack in docker, but you'd want to enable hot reloading (command: gunicorn myproject.wsgi:application --reload --bind 0.0.0.0:8000)
 SQL server:
    * SQLite: local dev server, not producton-grade, automatically installed by Django
    * PostgreSQL: typically used in the production environment. It may also be used in the local dev environment instead of SQLite
@@ -63,7 +63,7 @@ DATABASES = {
 
 4. psql -U postgres -f db/schema.sql
 5. python manage.py migrate
-6. python manage.py runserver
+6. python manage.py runserver  # the dev server will use the postgres server
 
 - Prod:
 1. Create database using the <External Database URL>:
@@ -78,6 +78,15 @@ DB_URL='<Internal Database URL>/app_db'
 
 
 Misc/TODO:
-Run runserver locally but configured for my local pgsql (via psycopg2)
-Perhaps later on implement a dockerized dev environment that does the same
-Production: gunicorn (instead of runserver), and pgsql (psycopg2)
+* Update notes elsewhere on using the correct command for: psql "<External Database URL>"
+* Cleanup this very doc (should be .md)
+* Minimal makefile for automatic dev venv install/activate
+* Update .env.EXAMPLE with latest
+* Render blueprint (especially for postgres!)
+  (???) Add health check: Use render.yaml to configure a health check endpoint if needed (?)
+* GitHub workflow build
+* Build (or start) needs (???):
+   python manage.py collectstatic --noinput
+   DJANGO_SETTINGS_MODULE=core.settings / WhiteNoise
+* README.md, add Routine Saga to Portfolio list
+* Implement a dockerized dev environment that uses gunicorn --reload and postgres (container maybe)
