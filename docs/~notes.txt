@@ -1,0 +1,73 @@
+
+Server Environment Notes
+WGSI:
+   Similar to the Node.js the core HTTP server module. Django automatically includes it during the initial project configuration.
+App server:
+   * runserver: a local dev server built into Django (similar to React)
+   * gunicorn: a production server package similar to Node.js. It runs the code and manages worker processes in production. Adding gunicorn to WSGI makes it production ready.
+      It can be used in a local dev stack in docker, but you'd want to enable hot-reloading (command: gunicorn myproject.wsgi:application --reload --bind 0.0.0.0:8000)
+SQL server:
+   * SQLite: local dev server, not producton-grade, automatically installed by Django
+   * PostgreSQL: typically used in the production environment. It may also be used in the local dev environment instead of SQLite
+
+Requirements
+Typically you'll want to manage multiple requirements.txt files:
+requirements.txt: the base app requirements
+requirements_dev.txt: additional dev tools (e.g. pettier, lint)
+requirements_prod.txt: production tools (e.g. gunicorn, psycopg2)
+
+Configuring gunicorn:
+NOTE: no code change is required because gunicorn communicates through the WSGI that Django provides
+NOTE: fcntl is required for gunicorn but it is not supported for Windows/Cygwin
+1. Create a <proj_root>/requirements_prod.txt:
+# Requirements for production environment
+gunicorn
+1. Install it in a fresh venv:
+$ python -m pip install --upgrade pip
+$ pip install -r requirements.txt
+$ pip install -r requirements_prod.txt
+1. You can try running it locally *on nonwindows hosts*:
+$ gunicorn core.wsgi:application --bind 127.0.0.1:8000
+1. Update the hosting service:
+Start: gunicorn core.wsgi:application --bind 0.0.0.0:$PORT
+
+
+Configuring PostgreSQL:
+- Development:
+1. pip install psycopg2-binary  # precompiled binary for the os
+2. .env
+DB_NAME='bookshelter_db'
+DB_USER='postgres'
+DB_PASSWORD='insecure'
+3. core/settings.py
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": DB_NAME,
+        "USER": DB_USER,
+        "PASSWORD": DB_PASSWORD,
+        "HOST": DB_HOST,
+        "PORT": DB_PORT,
+    }
+}
+4. psql -U postgres -f db/schema.sql
+5. python manage.py migrate
+6. python manage.py runserver
+
+- Prod:
+1. Create database using External URL:
+Connect to default db then create the new one
+psql "postgresql://bookshelter_user:PWxxxxxxxxxxxxx@dpg-d0vo9kfdiees73f2lgig-a.oregon-postgres.render.com/bookshelter_db" -c "CREATE DATABASE routinesaga_db;"
+2. Update <proj_root>/requirements_prod.txt:
+# Requirements for production environment
+gunicorn
+psycopg2
+3. Set the production Environment variables:
+DB_NAME='routinesaga_db'
+DB_USER='<user>'
+DB_PASSWORD='<password>'
+
+Misc/TODO:
+Run runserver locally but configured for my local pgsql (via psycopg2)
+Perhaps later on implement a dockerized dev environment that does the same
+Production: gunicorn (instead of runserver), and pgsql (psycopg2)
