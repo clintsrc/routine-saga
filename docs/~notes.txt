@@ -90,9 +90,8 @@ DB_URL='<Internal Database URL>/app_db'
 Misc/TODO:
 * Cleanup this very doc (should be .md)
 * Minimal makefile for automatic dev venv install/activate
-* Render blueprint (especially for postgres!)
+* Render blueprint:
   (???) Add health check: Use render.yaml to configure a health check endpoint if needed (?)
-* GitHub workflow build
 * The render Build (or Start) entry needs (???):
    python manage.py collectstatic --noinput
    DJANGO_SETTINGS_MODULE=core.settings / WhiteNoise
