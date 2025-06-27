@@ -5,14 +5,7 @@
 
 ### env file
 
-- Prepare the ./.env.EXAMPLE file (e.g.):
-
-```env
-DJANGO_SECRET_KEY=password   # openssl rand -base64 50, (strip the trailing =)
-DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
-DEBUG=True
-DATABASE_URL=postgres://user:password@localhost:5432/mydb
-```
+- Prepare the .env.EXAMPLE file (e.g.):
 
 ### core/settings.py
 

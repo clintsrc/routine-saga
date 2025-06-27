@@ -61,9 +61,19 @@ DATABASES = {
     "default": dj_database_url.parse(DB_URL, conn_max_age=600),
 }
 
-4. psql -U postgres -f db/schema.sql
-5. python manage.py migrate
-6. python manage.py runserver  # the dev server will use the postgres server
+4. Create a simple schema script:
+db/schema.sql:
+-- DROP DATABASE
+DROP DATABASE IF EXISTS routinesaga_db;
+
+-- CREATE DATABASE
+CREATE DATABASE routinesaga_db;
+
+5. Create the database:
+psql -U postgres -f db/schema.sql
+
+6. python manage.py migrate
+7. python manage.py runserver  # the dev server will use the postgres server
 
 - Prod:
 1. Create database using the <External Database URL>:
@@ -78,15 +88,14 @@ DB_URL='<Internal Database URL>/app_db'
 
 
 Misc/TODO:
-* Update notes elsewhere on using the correct command for: psql "<External Database URL>"
 * Cleanup this very doc (should be .md)
 * Minimal makefile for automatic dev venv install/activate
-* Update .env.EXAMPLE with latest
 * Render blueprint (especially for postgres!)
   (???) Add health check: Use render.yaml to configure a health check endpoint if needed (?)
 * GitHub workflow build
-* Build (or start) needs (???):
+* The render Build (or Start) entry needs (???):
    python manage.py collectstatic --noinput
    DJANGO_SETTINGS_MODULE=core.settings / WhiteNoise
-* README.md, add Routine Saga to Portfolio list
+* Insomnia routes and export
+* Add README.md
 * Implement a dockerized dev environment that uses gunicorn --reload and postgres (container maybe)
