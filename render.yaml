@@ -20,10 +20,12 @@ services:
       # keep the existing DB_URL intact: you need to
       #   manually update it for new PostgreSQL deployments
       - key: DB_URL
+        value: "<Internal Database URL>/routinesaga_db"
         sync: false
       - key: DJANGO_SECRET_KEY
+        value: "openssl rand -base64 50"
         sync: false   # fix this (rest -> secrets): openssl rand -base64 50, (strip the trailing =)
       - key: DJANGO_ALLOWED_HOSTS
-        value: "*.onrender.com"
+        value: "routine-saga.onrender.com"
       - key: DJANGO_CSRF_TRUSTED_ORIGINS
         value: "https://routine-saga.onrender.com"
