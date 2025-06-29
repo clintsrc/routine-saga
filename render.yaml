@@ -16,6 +16,7 @@ services:
     runtime: python
     buildCommand: pip install -r requirements_prod.txt
     startCommand: python manage.py migrate && gunicorn core.wsgi:application --bind 0.0.0.0:$PORT
+    healthCheckPath: /healthz/
     envVars:
       # keep the existing DB_URL intact: you need to
       #   manually update it for new PostgreSQL deployments
