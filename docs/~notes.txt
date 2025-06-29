@@ -78,13 +78,9 @@ DB_URL='<Internal Database URL>/app_db'
 
 
 Misc/TODO:
-* Update notes elsewhere on using the correct command for: psql "<External Database URL>"
 * Cleanup this very doc (should be .md)
 * Minimal makefile for automatic dev venv install/activate
-* Update .env.EXAMPLE with latest
-* Render blueprint (especially for postgres!)
-  (???) Add health check: Use render.yaml to configure a health check endpoint if needed (?)
-* GitHub workflow build
+* GitHub workflow build (linter at minimum)
 * Build (or start) needs (???):
    python manage.py collectstatic --noinput
    DJANGO_SETTINGS_MODULE=core.settings / WhiteNoise
