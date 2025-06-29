@@ -21,3 +21,9 @@ services:
       #   manually update it for new PostgreSQL deployments
       - key: DB_URL
         sync: false
+      - key: DJANGO_SECRET_KEY
+        sync: false   # fix this (rest -> secrets): openssl rand -base64 50, (strip the trailing =)
+      - key: DJANGO_ALLOWED_HOSTS
+        value: "routine-saga.onrender.com"
+      - key: DJANGO_CSRF_TRUSTED_ORIGINS
+        value: "https://routine-saga.onrender.com"
