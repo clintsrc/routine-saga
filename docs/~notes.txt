@@ -91,13 +91,6 @@ Misc/TODO:
 * Cleanup this very doc (should be .md)
 * Minimal makefile for automatic dev venv install/activate
 * pettier, lint (and workflows)
-* Render blueprint:
-  Add health check (healthz): Use render.yaml to configure a health check endpoint
-  https://render.com/docs/health-checks
-  services:
-  - type: web
-    healthCheckPath: /healthz/
-
 * The render Build (or Start) entry needs (???):
    python manage.py collectstatic --noinput
    DJANGO_SETTINGS_MODULE=core.settings / WhiteNoise

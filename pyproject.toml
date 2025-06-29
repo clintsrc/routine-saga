@@ -1,0 +1,23 @@
+#
+# Black formatter config
+#
+[tool.black]
+line-length = 88                     # PEP8, or 79 is accepted
+target-version = ['py38', 'py39']   # supported python versions
+skip-string-normalization = false   # false: enforce double quotes, true: leave all quotes as they are
+include = '\.pyi?$'                  # apply to python only
+exclude = '''
+/(
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.nox
+  | \.tox
+  | \.venv*
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''                                 # Exclude common build and VCS directories
