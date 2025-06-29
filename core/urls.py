@@ -1,3 +1,5 @@
+# pylint: disable=unused-argument
+
 """
 URL configuration for core project.
 
@@ -17,20 +19,27 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 
 
-# A minimal view to verify the deployment
 def home_view(request):
+    """A minimal view to verify the deployment"""
     return HttpResponse("Forthcoming! A Django Routine Saga app!")
+
+
+def health_check(request):
+    """A pingable keepalive route for the hosting service to call"""
+    return JsonResponse({"status": "ok"})
 
 
 # define all urls for the website
 urlpatterns = [
-    # all urls specifically available for the admin site
+    # admin endpoints
     path("admin/", admin.site.urls),
-    # all urls specifically available for the accounts app site
+    # user account endpoints
     path("accounts/", include("accounts.urls")),
-    # all urls specifically available for the main app site
+    # main app site endpoints
     path("", include("notes.urls")),
+    # infrastructure-related endpoints
+    path("healthz/", health_check),
 ]
