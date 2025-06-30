@@ -1,6 +1,21 @@
 [MASTER]
-ignore=.venv*,build,dist  # works: pylint --ignore-paths=".venv,.venv.dev" .
+ignore=build,dist,staticfiles  # works: pylint --ignore-paths=".venv,.venv.dev" .
 ignore-patterns=test_.*\.py
+# reduce noise
+disable=
+    C0103,  # invalid-name
+    C0114,  # missing-module-docstring
+    C0115,  # missing-class-docstring
+    C0116,  # missing-function-docstring
+    C0415,  # import-outside-toplevel
+    E0401,  # import-error (can produce false positives in venv/Django)
+    E1101,  # no-member (Django/Flask dynamic fields)
+    R0903,  # too-few-public-methods
+    R0913,  # too-many-arguments
+    R0914,  # too-many-locals
+    R0915,  # too-many-statements
+    W0511,  # fixme
+    W0621,  # redefined-outer-name
 
 [MAIN]
 

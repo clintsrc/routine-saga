@@ -20,7 +20,6 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 env_path = BASE_DIR / ".envs/.env"
-print(f"============: ${env_path}")
 if env_path.exists():
     load_dotenv(env_path)  # load env variables first!
 
@@ -68,6 +67,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -108,7 +108,10 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation."
+            "UserAttributeSimilarityValidator"
+        ),
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
@@ -138,6 +141,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = "static/"
+
+# collectstatic gathers static assets for production here
+STATIC_ROOT = BASE_DIR / "staticfiles"
+#  Render has no CDN: WhiteNoise will collect and manage compression and caching here
+#     python manage.py collectstatic --noinput
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
