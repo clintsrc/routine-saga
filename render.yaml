@@ -14,7 +14,7 @@ services:
     plan: free
     branch: main
     runtime: python
-    buildCommand: pip install -r requirements\production.txt
+    buildCommand: pip install -r requirements/production.txt
     startCommand: python manage.py migrate && gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
     healthCheckPath: /healthz/
     envVars:

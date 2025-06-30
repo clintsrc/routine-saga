@@ -1,0 +1,41 @@
+name: Auto Format
+
+on:
+  push:
+    branches: [main, dev]
+    paths:
+      - '**.py'
+
+jobs:
+  black-format:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # push fixes
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
+
+      - name: Install Black
+        run: pip install black
+
+      - name: Run Black then push any changes
+        run: |
+          black .
+          if [[ `git status --porcelain` ]]; then
+            echo "Committing Black format changes..."
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git commit -am "style: auto-format code with Black"
+            git push
+            echo "Done."
+          else
+            echo "No formatting changes."
+          fi
