@@ -9,7 +9,7 @@ $ pip install django-bootstrap5
 ```
 
 Add it to the list of installed apps
-Update core/settings.py:
+Update config/settings.py:
 
 ```python
 ...
@@ -108,7 +108,7 @@ Create a project-level templates folder to store global templates. Create the 40
 <project_root>/templates/<app_name>/500.html
 
 1. Configure Django to use the <project_root>/template directory:
-Update core/settings.py
+Update config/settings.py
 
 ```python
 ...
