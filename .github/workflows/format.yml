@@ -3,8 +3,7 @@ name: Auto Format
 on:
   push:
     branches:
-      - main
-      - develop
+      - '**'
 
 jobs:
   format:
