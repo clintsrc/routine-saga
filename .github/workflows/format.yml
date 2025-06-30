@@ -4,9 +4,7 @@ on:
   push:
     paths:
       - "**/*.py"
-  pull_request:
-    paths:
-      - "**/*.py"
+
 jobs:
   black-format:
     runs-on: ubuntu-latest
