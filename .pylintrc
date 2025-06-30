@@ -8,13 +8,14 @@ disable=
     C0115,  # missing-class-docstring
     C0116,  # missing-function-docstring
     C0415,  # import-outside-toplevel
+    E0401,  # import-error (can produce false positives in venv/Django)
+    E1101,  # no-member (Django/Flask dynamic fields)
     R0903,  # too-few-public-methods
     R0913,  # too-many-arguments
     R0914,  # too-many-locals
     R0915,  # too-many-statements
     W0511,  # fixme
-    E0401,  # import-error (can produce false positives in venv/Django)
-    E1101   # no-member (Django/Flask dynamic fields)
+    W0621,  # redefined-outer-name
 
 [MAIN]
 
