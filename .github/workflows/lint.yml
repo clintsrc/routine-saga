@@ -3,10 +3,13 @@ name: Lint and Format Check
 on:
   push:
     paths:
-      - '**.py'
+      - '**/*.py'
   pull_request:
     paths:
-      - '**.py'
+      - '**/*.py'
+  workflow_run:
+    workflows: ["Auto Format"]
+    types: [completed]
 
 jobs:
   lint:

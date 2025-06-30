@@ -1,16 +1,17 @@
 name: Auto Format
 
 on:
-  workflow_run:
-    workflows: ["Format Code"]  # Must change if the formatter script name changes
-    types:
-      - completed
-
+  push:
+    paths:
+      - "**/*.py"
+  pull_request:
+    paths:
+      - "**/*.py"
 jobs:
   black-format:
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # push fixes
+      contents: write # push fixes
 
     steps:
       - name: Checkout code
@@ -21,7 +22,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.13'
+          python-version: "3.13"
 
       - name: Install Black
         run: pip install black
