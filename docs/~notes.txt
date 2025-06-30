@@ -89,7 +89,6 @@ DB_URL='<Internal Database URL>/app_db'
 
 Misc/TODO:
 * Cleanup this very doc (should be .md)
-* Minimal makefile for automatic dev venv install/activate
 * pettier, lint (and workflows)
 * The render Build (or Start) entry needs (???):
    python manage.py collectstatic --noinput
