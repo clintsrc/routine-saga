@@ -14,8 +14,8 @@ services:
     plan: free
     branch: main
     runtime: python
-    buildCommand: pip install -r requirements/production.txt
-    startCommand: python manage.py migrate && gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
+    buildCommand: pip install -r requirements/production.txt && python manage.py collectstatic --noinput
+    startCommand: python manage.py migrate --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
     healthCheckPath: /healthz/
     envVars:
       # keep the existing DB_URL intact: you need to
@@ -23,7 +23,7 @@ services:
       - key: DB_URL
         sync: false
       - key: DJANGO_SECRET_KEY
-        sync: false   # fix this (rest -> secrets): openssl rand -base64 50, (strip the trailing =)
+        sync: false   # generate using: openssl rand -base64 50 (strip line breaks)
       - key: DJANGO_ALLOWED_HOSTS
         value: "routine-saga.onrender.com"
       - key: DJANGO_CSRF_TRUSTED_ORIGINS

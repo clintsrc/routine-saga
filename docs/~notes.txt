@@ -93,6 +93,7 @@ Misc/TODO:
 * The render Build (or Start) entry needs (???):
    python manage.py collectstatic --noinput
    DJANGO_SETTINGS_MODULE=config.settings / WhiteNoise
+* seeding topics (for dev at least!)
 * Insomnia routes and export
 * Add README.md
 * Implement a dockerized dev environment that uses gunicorn --reload and postgres (container maybe)
