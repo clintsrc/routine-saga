@@ -2,11 +2,12 @@ name: Auto Format
 
 on:
   push:
-    paths:
-      - "**/*.py"
+    branches:
+      - main
+      - develop
 
 jobs:
-  black-format:
+  format:
     runs-on: ubuntu-latest
     permissions:
       contents: write # push fixes
