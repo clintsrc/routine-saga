@@ -11,8 +11,9 @@ app_name = "notes"
 # define all urls for the website
 urlpatterns = [
     # Home page
-    # Add "" to the route to match the default (root) path "/"
-    # views.index: the function Django will call in views.py when this route is matched
+    # Add "" to the endpoint to match the default (root) path "/"
+    # views.index: the function (route) Django will call in views.py when it
+    #   matches this endpoint
     # name="index": a name/alias for this route (useful for reverse lookups)
     path("", views.index, name="index"),
     # Any additional pages available for this app...
