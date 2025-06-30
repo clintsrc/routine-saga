@@ -1,8 +1,8 @@
-name: Lint and Format Check
+name: Lint and Format Checks
 
 on:
   workflow_run:
-    workflows: ["Auto Format"]
+    workflows: ["format.yml"]
     types: [completed]
 
 jobs:
