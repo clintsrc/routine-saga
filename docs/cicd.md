@@ -7,9 +7,9 @@
 
 - Prepare the .env.EXAMPLE file (e.g.):
 
-### core/settings.py
+### config/settings.py
 
-- Update the core/settings.py file to read the dev env or else to use the variables set
+- Update the config/settings.py file to read the dev env or else to use the variables set
 for the production deployment
 
 ```python
@@ -42,7 +42,7 @@ ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost").split(",")
 
 - The production environment requires a minimal view to serve as the default page (
     similar to a react component).
-Add one to the core/urls.py file:
+Add one to the config/urls.py file:
 
 ```python
 ...
@@ -94,7 +94,7 @@ CSRF verification failed. Request aborted.
 
 ## Soln: Cross-Site Request Forgery: Django blocks if CSRF is not properly configured
 
-Add another env variable to core/settings.py:
+Add another env variable to config/settings.py:
 
 ```python
 CSRF_TRUSTED_ORIGINS = os.environ.get("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",")

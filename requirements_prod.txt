@@ -1,4 +1,0 @@
-# Requirements for production environment
--r requirements.txt
-gunicorn
-psycopg2

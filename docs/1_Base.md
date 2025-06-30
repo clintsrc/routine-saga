@@ -46,11 +46,10 @@ $ pip install -r requirements.txt
 ### 1. Generate the project files ()
 
 ```bash
-$ django-admin startproject core .   # the dot makes it readily deployable
+$ django-admin startproject config .   # the dot makes it readily deployable
 ```
 
-- 'core' (or 'config', another standard naming convention) is the django
-  backend (similar to a javascript node server)
+- 'config' is the django 'core' backend (similar to a javascript node server)
 - manage.py: forwards commands to the relevant part of django
 - settings.py: interacts with your system and manages the project
 - urls.py: tells django which files to build in response to browser requests
@@ -87,7 +86,7 @@ $ python manage.py startapp <app_name>   # create the main app module
    - See the notes/models.py
    - ref: https://docs.djangoproject.com/en/4.1/ref/models/fields
 1. Hook the data model up to the project
-   - Add the app to the INSTALLED_APPS list (see core/settings.py)
+   - Add the app to the INSTALLED_APPS list (see config/settings.py)
 
 ```python
 INSTALLED_APPS = [

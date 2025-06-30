@@ -26,7 +26,7 @@ $ python manage.py startapp accounts
 
 ### Add account to INSTALLED_APPS
 
-(in core/settings.py)
+(in config/settings.py)
 
 ```python
 INSTALLED_APPS = [
@@ -38,7 +38,7 @@ INSTALLED_APPS = [
 
 ### Add urls to be defined for the accounts app
 
-(Update: core/urls.py)
+(Update: config/urls.py)
 
 ```python
 # define all urls for the website
@@ -104,7 +104,7 @@ Create: accounts/templates/registration/login.html
 
 ### Redirect a successful login
 
-(Update core/settings.py -- add to the end of the file:)
+(Update config/settings.py -- add to the end of the file:)
 
 ```python
 # user settings
@@ -154,7 +154,7 @@ LOGIN_REDIRECT_URL = '<app_name>:index'
 
 ### Add a redirect for the logout
 
-(Update core/settings.py -- add to the end of the file:)
+(Update config/settings.py -- add to the end of the file:)
 
 ```python
 # user settings
@@ -270,7 +270,7 @@ from django.contrib.auth.decorators import login_required
 ...
 ```
 
-1. Update core/settings.py to redirect to the login page:
+1. Update config/settings.py to redirect to the login page:
 
 ```python
 # user settings

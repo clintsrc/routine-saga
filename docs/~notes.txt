@@ -32,9 +32,9 @@ $ python -m pip install --upgrade pip
 $ pip install -r requirements.txt
 $ pip install -r requirements_prod.txt
 1. You can try running it locally *on nonwindows hosts*:
-$ gunicorn core.wsgi:application --bind 127.0.0.1:8000
+$ gunicorn config.wsgi:application --bind 127.0.0.1:8000
 1. Update the hosting service:
-Start: gunicorn core.wsgi:application --bind 0.0.0.0:$PORT
+Start: gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
 
 
 Configuring PostgreSQL:
@@ -44,7 +44,7 @@ Configuring PostgreSQL:
 DB_NAME='bookshelter_db'
 DB_USER='postgres'
 DB_PASSWORD='insecure'
-3. core/settings.py
+3. config/settings.py
 import dj_database_url
 ...
 # Database info
@@ -93,7 +93,7 @@ Misc/TODO:
 * pettier, lint (and workflows)
 * The render Build (or Start) entry needs (???):
    python manage.py collectstatic --noinput
-   DJANGO_SETTINGS_MODULE=core.settings / WhiteNoise
+   DJANGO_SETTINGS_MODULE=config.settings / WhiteNoise
 * Insomnia routes and export
 * Add README.md
 * Implement a dockerized dev environment that uses gunicorn --reload and postgres (container maybe)

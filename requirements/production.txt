@@ -1,0 +1,6 @@
+# Requirements for production environment
+# PRECAUTION: avoid production dependencies that aren't in development
+
+-r base.txt
+gunicorn
+psycopg2
