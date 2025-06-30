@@ -10,6 +10,7 @@ class TopicForm(forms.ModelForm):
         fields = ["text"]  # Include the text field
         labels = {"text": ""}  # Do not generate a label for the text field
 
+
 # Reuse ModelForm for Topic Entries
 class EntryForm(forms.ModelForm):
     class Meta:
