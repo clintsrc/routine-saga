@@ -1,9 +1,9 @@
 name: Lint and Format Checks
 
 on:
-  workflow_run:
-    workflows: ["format.yml"]
-    types: [completed]
+  push:
+    branches:
+      - '**'
 
 jobs:
   lint:
