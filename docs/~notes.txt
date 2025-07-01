@@ -88,12 +88,13 @@ DB_URL='<Internal Database URL>/app_db'
 
 
 Misc/TODO:
-* Cleanup this very doc (should be .md)
-* pettier, lint (and workflows)
-* The render Build (or Start) entry needs (???):
-   python manage.py collectstatic --noinput
-   DJANGO_SETTINGS_MODULE=config.settings / WhiteNoise
-* seeding topics (for dev at least!)
+* DB Seeding (topics / entries) for dev
+  - Local script to add an app admin
 * Insomnia routes and export
+  - Delete Entry route
+* Cleanup this very doc (should be .md)
 * Add README.md
-* Implement a dockerized dev environment that uses gunicorn --reload and postgres (container maybe)
+* Dockerize
+  - dev environment can use 'gunicorn --reload'
+  - maybe a postgres container too?
+  - deploy container to Render?
