@@ -7,17 +7,17 @@ target-version = ['py38', 'py39']   # supported python versions
 skip-string-normalization = false   # false: enforce double quotes, true: leave all quotes as they are
 include = '\.pyi?$'                  # apply to python only
 exclude = '''
-/(
-  \.eggs
+(
+    \.eggs
   | \.git
   | \.hg
   | \.mypy_cache
   | \.nox
   | \.tox
-  | \.venv*
+  | \.venv[^/]*
   | _build
   | buck-out
   | build
   | dist
-)/
+)
 '''                                 # Exclude common build and VCS directories

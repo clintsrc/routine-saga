@@ -122,7 +122,7 @@ def edit_entry(request, entry_id):
     """Edit an existing Entry"""
     entry = Entry.objects.get(id=entry_id)
     topic = entry.topic
-    # Check whether the currnt user has access
+    # Check whether the current user has access
     if topic.owner != request.user:
         raise Http404
 
