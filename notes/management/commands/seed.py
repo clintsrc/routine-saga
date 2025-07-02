@@ -29,15 +29,26 @@ class Command(BaseCommand):
         # Create entries
         Entry.objects.create(
             topic=topic1,
-            text="Virtual environments help isolate project dependencies, preventing conflicts between packages across different projects. By creating a dedicated environment, you can manage package versions easily and keep your global Python installation clean.",
+            text="Virtual environments help isolate project dependencies, "
+            "preventing conflicts between packages across different projects. By "
+            "creating a dedicated environment, you can manage package versions easily "
+            "and keep your global Python installation clean.",
         )
         Entry.objects.create(
             topic=topic2,
-            text="Instead of using print statements, the logging module offers a flexible way to record runtime information at different severity levels (debug, info, warning, error, critical). This helps track application behavior and diagnose issues in development and production environments.",
+            text="Instead of using print statements, the logging module offers a "
+            "flexible way to record runtime information at different severity "
+            "levels (debug, info, warning, error, critical). This helps track "
+            "application behavior and diagnose issues in development and production "
+            "environments.",
         )
         Entry.objects.create(
             topic=topic2,
-            text="Catching and handling exceptions thoughtfully ensures your program can recover from unexpected errors without crashing. Use try-except blocks to manage known failure points, and avoid bare excepts to prevent masking bugs. Also, clean up resources properly using 'finally' or context managers.",
+            text="Catching and handling exceptions thoughtfully ensures your "
+            "program can recover from unexpected errors without crashing. Use "
+            "try-except blocks to manage known failure points, and avoid bare "
+            "excepts to prevent masking bugs. Also, clean up resources properly using "
+            "'finally' or context managers.",
         )
 
         self.stdout.write(self.style.SUCCESS("----- DATABASE SYNCED -----"))
