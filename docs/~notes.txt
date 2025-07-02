@@ -88,8 +88,6 @@ DB_URL='<Internal Database URL>/app_db'
 
 
 Misc/TODO:
-* DB Seeding (topics / entries) for dev
-  - Local script to add an app admin
 * Insomnia routes and export
   - Delete Entry route
 * Cleanup this very doc (should be .md)
