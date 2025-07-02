@@ -1,3 +1,4 @@
+# pylint: disable=W0613
 #
 # Granting Admin access: http://<url>/admin/
 #   <project_root>$ python manage.py promote_to_admin username

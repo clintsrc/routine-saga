@@ -1,3 +1,5 @@
+# pylint: disable=W0613
+
 # This script must be located in: <project_root>/<app_dir>/management/commands/
 # Run it: <project_root>$ python manage.py seed
 
