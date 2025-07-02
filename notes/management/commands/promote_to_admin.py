@@ -6,14 +6,15 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 
+
 class Command(BaseCommand):
-    help = 'Promote a user to admin'
+    help = "Promote a user to admin"
 
     def add_arguments(self, parser):
-        parser.add_argument('username', type=str, help='Username to promote')
+        parser.add_argument("username", type=str, help="Username to promote")
 
     def handle(self, *args, **options):
-        username = options['username']
+        username = options["username"]
         try:
             user = User.objects.get(username=username)
             user.is_staff = True
