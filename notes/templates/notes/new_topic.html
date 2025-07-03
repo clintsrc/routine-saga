@@ -6,12 +6,15 @@
   action: send the form data to the new_topic() view function
   method: submit the data as a POST
 //-->
-<form action="{% url 'notes:new_topic' %}" method="post">
+<form action="{% url 'notes:new_topic' %}" method="post" class="mt3">
   <!-- csrf_token: prevent cross-site forgery attacks //-->
   {% csrf_token %}
   <!-- Django can automatically handle displaying the fields as div entries //-->
   {{form.as_div}}
   <!-- the form submit button //-->
-  <button name="submit">Add</button>
+  <div class="mt-3 d-flex">
+    <button type="submit" class="btn btn-outline-primary me-2">Add</button>
+    <a href="{% url 'notes:index' %}" class="btn btn-outline-secondary" role="button">Cancel</a>
+  </div>
 </form>
 {% endblock content%}

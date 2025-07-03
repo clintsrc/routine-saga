@@ -1,6 +1,6 @@
 # pylint: disable=no-member
 # Import redirect to forward from new_topic to the topic page on submit
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 
@@ -9,7 +9,7 @@ from .forms import TopicForm, EntryForm  # Import the new submission form
 
 
 ##
-# Read using GET routes
+# Read using GET endpoints
 #
 def index(request):
     """Home page"""
@@ -48,7 +48,7 @@ def topic(request, topic_id):
 
 
 ##
-# Create using POST routes
+# Create using POST endpoints
 #
 @login_required
 def new_topic(request):
@@ -115,7 +115,7 @@ def new_entry(request, topic_id):
 
 
 ##
-# Update routes
+# Update endpoints
 #
 @login_required
 def edit_entry(request, entry_id):
@@ -145,3 +145,27 @@ def edit_entry(request, entry_id):
             )  # forward to view the Entry page
     context = {"entry": entry, "topic": topic, "form": form}
     return render(request, "notes/edit_entry.html", context)
+
+
+##
+# Delete endpoint
+#
+# Delete an entry (via form: POST for deletion)
+@login_required
+def delete_entry(request, entry_id):
+    """Delete an existing entry."""
+    # Return the entry or show the 404 page
+    entry = get_object_or_404(Entry, id=entry_id)
+    topic = entry.topic
+
+    # Check whether the current user has access
+    if topic.owner != request.user:
+        raise Http404
+
+    # Using a form to delete the entry, so use the POST command
+    if request.method == "POST":
+        entry.delete()
+        return redirect("notes:topic", topic_id=topic.id)
+
+    # If GET request, confirm deletion
+    return render(request, "notes/delete_entry.html", {"entry": entry, "topic": topic})
