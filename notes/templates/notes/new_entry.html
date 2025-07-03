@@ -15,6 +15,9 @@
   <!-- Django can automatically handle displaying the fields as div entries //-->
   {{form.as_div}}
   <!-- the form submit button //-->
-  <button name="submit">Add</button>
+  <button name="submit" class="btn btn-outline-primary">Add</button>
+    <a href="{% url 'notes:topic' topic.id %}" class="btn btn-outline-secondary"
+    >Cancel</a
+  >
 </form>
 {% endblock content%}

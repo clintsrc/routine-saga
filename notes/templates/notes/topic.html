@@ -11,19 +11,25 @@
 <!-- Use a for loop to populate an unordered list from the context dictionary
     which contains the topic entries queried from the database //-->
 {% for entry in entries %}
-
 <!-- Django uses the | operator to format the data field output //-->
-<div class="card mb-3">
-  <!-- Card header with timestamp and edit link -->
-  <h4 class="card-header">
-    {{entry.date_added|date:'M d, Y H:i'}}
-    <small
-      ><a href="{% url 'notes:edit_entry' entry.id %}">Edit entry</a></small
+<div class="card-header d-flex justify-content-between align-items-center">
+  <small class="text-muted">{{ entry.date_added|date:'M d, Y H:i' }}</small>
+  <div>
+    <a
+      href="{% url 'notes:edit_entry' entry.id %}"
+      class="text-decoration-none me-3"
+      >Edit</a
     >
-  </h4>
-  <!-- Card body with entry text -->
-  <div class="card-body">{{entry.text|linebreaks}}</div>
+    <a
+      href="{% url 'notes:delete_entry' entry.id %}"
+      class="text-danger text-decoration-none"
+      >Delete</a
+    >
+  </div>
 </div>
+<!-- Card body with entry text -->
+<div class="card-body">{{entry.text|linebreaks}}</div>
+
 <!-- Handle and empty query result //-->
 {% empty %}
 <p>There are no entries for this topic yet.</p>

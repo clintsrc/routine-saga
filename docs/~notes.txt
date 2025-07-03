@@ -89,7 +89,8 @@ DB_URL='<Internal Database URL>/app_db'
 
 Misc/TODO:
 * Insomnia routes and export
-  - Delete Entry route
+  - Edit Topic route
+  - Delete Topic route
 * Cleanup this very doc (should be .md)
 * Add README.md
 * Dockerize
