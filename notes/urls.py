@@ -31,11 +31,15 @@ urlpatterns = [
     ##
     # Update routes
     #
+    # Update a topic
+    path("edit_topic/<int:topic_id>/", views.edit_topic, name="edit_topic"),
     # Update an entry
     path("edit_entry/<int:entry_id>/", views.edit_entry, name="edit_entry"),
     ##
     # Delete routes
     #
-    # Delete an entry  (GET shows confirm page, POST performs delete)
+    # Delete a topic (GET shows confirm page, POST performs delete)
+    path("delete_topic/<int:topic_id>/", views.delete_topic, name="delete_topic"),
+    # Delete an entry (GET shows confirm page, POST performs delete)
     path("delete_entry/<int:entry_id>/", views.delete_entry, name="delete_entry"),
 ]
