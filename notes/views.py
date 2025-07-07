@@ -118,6 +118,29 @@ def new_entry(request, topic_id):
 # Update endpoints
 #
 @login_required
+def edit_topic(request, topic_id):
+    """Edit an existing Topic."""
+    topic = get_object_or_404(Topic, id=topic_id)
+
+    # Ensure the current user owns the topic
+    if topic.owner != request.user:
+        raise Http404
+
+    if request.method != "POST":
+        # Load form pre-filled with topic data
+        form = TopicForm(instance=topic)
+    else:
+        # Update topic with user-submitted data
+        form = TopicForm(instance=topic, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("notes:topics")  # Redirect to topics list
+
+    context = {"form": form, "topic": topic}
+    return render(request, "notes/edit_topic.html", context)
+
+
+@login_required
 def edit_entry(request, entry_id):
     """Edit an existing Entry"""
     entry = Entry.objects.get(id=entry_id)
@@ -150,6 +173,22 @@ def edit_entry(request, entry_id):
 ##
 # Delete endpoint
 #
+# Delete a topic (via form: POST for deletion)
+@login_required
+def delete_topic(request, topic_id):
+    """Delete an existing Topic and its entries."""
+    topic = get_object_or_404(Topic, id=topic_id)
+
+    if topic.owner != request.user:
+        raise Http404
+
+    if request.method == "POST":
+        topic.delete()
+        return redirect("notes:topics")
+
+    return render(request, "notes/delete_topic.html", {"topic": topic})
+
+
 # Delete an entry (via form: POST for deletion)
 @login_required
 def delete_entry(request, entry_id):

@@ -17,12 +17,12 @@
   <div>
     <a
       href="{% url 'notes:edit_entry' entry.id %}"
-      class="text-decoration-none me-3"
+      class="btn btn-sm btn-outline-primary me-3"
       >Edit</a
     >
     <a
       href="{% url 'notes:delete_entry' entry.id %}"
-      class="text-danger text-decoration-none"
+      class="btn btn-sm btn-outline-danger"
       >Delete</a
     >
   </div>
@@ -34,3 +34,4 @@
 {% empty %}
 <p>There are no entries for this topic yet.</p>
 {% endfor %} {% endblock content %}
+
