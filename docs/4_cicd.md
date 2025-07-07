@@ -153,6 +153,7 @@ requirements_dev.txt -- this would import the app requirements before the dev pa
 
 Requirements.txt files can include other requirements.txt files. This local.txt file includes the production (requirements.txt) package, meaning it has all production as well as dev packages.
 <proj_root>/local.txt:
+
 ```bash
 -r requirements.txt
 black
@@ -259,3 +260,31 @@ CREATE DATABASE routinesaga_db;
 
 3. Set the production Environment variable on the hosting site:
 DB_URL='<Internal Database URL>/routinesaga_db'
+
+
+#### WhiteNoies static file management
+
+The built-in dev server (runserver) serves static files for the dev environment.
+
+In production you're expected to use something like Nginx which also supports compression, caching, and versioned filenames. For smaller projects you can use the WhiteNoise package instead. It uses the Django WSGI middleware
+
+```python
+# wsgi.py
+from whitenoise import WhiteNoise
+application = WhiteNoise(application, root='staticfiles/')
+```
+
+```python
+MIDDLEWARE = [
+   ...
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+   ...
+]
+...
+# collectstatic gathers static assets for production here
+STATIC_ROOT = BASE_DIR / "staticfiles"
+#  Render has no CDN: WhiteNoise will collect and manage compression and caching here
+#     python manage.py collectstatic --noinput
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+```
+
