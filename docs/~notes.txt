@@ -1,7 +1,0 @@
-Misc/TODO:
-* Insomnia routes (and exports)
-* Add README.md
-* Dockerize
-  - dev environment can use 'gunicorn --reload'
-  - maybe a postgres container too?
-  - deploy container to Render?
