@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
+from django.http import HttpRequest, HttpResponse
 
 
-def register(request):
+def register(request: HttpRequest) -> HttpResponse:
     """New User registration"""
     if request.method != "POST":
         # Present the blank form to the user

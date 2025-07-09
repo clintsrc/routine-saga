@@ -1,6 +1,7 @@
 # Requirements for the Development environment
 -r production.txt
 psycopg2-binary
-black
 pylint
+mypy
+black
 pytest

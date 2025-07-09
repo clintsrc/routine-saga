@@ -19,15 +19,15 @@ Including another urls.py (this will 'build up' the full endpoint path)
 
 from django.contrib import admin
 from django.urls import path, include
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 
 
-def home_view(request):
+def home_view(request: HttpRequest) -> HttpResponse:
     """A minimal view to verify the deployment"""
     return HttpResponse("Forthcoming! A Django Routine Saga app!")
 
 
-def health_check(request):
+def health_check(request: HttpRequest) -> JsonResponse:
     """A pingable keepalive route for the hosting service to call"""
     return JsonResponse({"status": "ok"})
 

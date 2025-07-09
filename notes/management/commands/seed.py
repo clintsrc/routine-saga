@@ -3,7 +3,7 @@
 # This script must be located in: <project_root>/<app_dir>/management/commands/
 # Run it: <project_root>$ python manage.py seed
 
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandParser
 from django.contrib.auth.models import User
 from notes.models import Topic, Entry
 
@@ -11,7 +11,7 @@ from notes.models import Topic, Entry
 class Command(BaseCommand):
     help = "Reset and seed the database with test data"
 
-    def handle(self, *args, **kwargs):
+    def handle(self, *args: str, **kwargs: str) -> None:
         test_user = "testuser"
         test_pwd = "testpass123"
 
