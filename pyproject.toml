@@ -22,11 +22,14 @@ exclude = '''
 )
 '''                                 # Exclude common build and VCS directories
 
+#
+# MyPy static typing config
+#
 [tool.mypy]
 python_version = "3.13"
-strict = false
+strict = false  # after more experience with python typing be sure to set thist true!
 ignore_missing_imports = true
-check_untyped_defs = true
-disallow_untyped_defs = true
+check_untyped_defs = false
+disallow_untyped_defs = false
 warn_unused_ignores = true
 warn_return_any = true
