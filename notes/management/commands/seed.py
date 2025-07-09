@@ -11,7 +11,7 @@ from notes.models import Topic, Entry
 class Command(BaseCommand):
     help = "Reset and seed the database with test data"
 
-    def handle(self, *args, **kwargs):
+    def handle(self, *args: str, **kwargs: str) -> None:
         test_user = "testuser"
         test_pwd = "testpass123"
 

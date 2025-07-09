@@ -4,17 +4,17 @@
 #   <project_root>$ python manage.py promote_to_admin username
 #
 
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandParser
 from django.contrib.auth.models import User
 
 
 class Command(BaseCommand):
     help = "Promote a user to admin"
 
-    def add_arguments(self, parser):
+    def add_arguments(self, parser: CommandParser) -> None:
         parser.add_argument("username", type=str, help="Username to promote")
 
-    def handle(self, *args, **options):
+    def handle(self, *args: str, **options: str) -> None:
         username = options["username"]
         try:
             user = User.objects.get(username=username)
