@@ -3,7 +3,7 @@
 # This script must be located in: <project_root>/<app_dir>/management/commands/
 # Run it: <project_root>$ python manage.py seed
 
-from django.core.management.base import BaseCommand, CommandParser
+from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from notes.models import Topic, Entry
 
