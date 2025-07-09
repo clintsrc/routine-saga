@@ -2,7 +2,7 @@ from django.test import TestCase
 
 
 class HealthCheckTest(TestCase):
-    def test_healthz_route(self):
+    def test_healthz_route(self) -> None:
         # If you have named your URL pattern, use reverse('healthz')
         # Otherwise, you can just hardcode the path like '/healthz/'
         response = self.client.get("/healthz/")

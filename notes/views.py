@@ -2,8 +2,7 @@
 # Import redirect to forward from new_topic to the topic page on submit
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
-
+from django.http import Http404, HttpRequest, HttpResponse
 from .models import Topic, Entry
 from .forms import TopicForm, EntryForm  # Import the new submission form
 
@@ -11,16 +10,15 @@ from .forms import TopicForm, EntryForm  # Import the new submission form
 ##
 # Read using GET endpoints
 #
-def index(request):
+def index(request: HttpRequest) -> HttpResponse:
     """Home page"""
     # Render and return the 'index.html' template for the app
     return render(request, "notes/index.html")
 
 
 # Decorator restricts access to authenticated users, by running
-#   login_required() before topics()
 @login_required
-def topics(request):
+def topics(request: HttpRequest) -> HttpResponse:
     """Topics page"""
     # Query the database for the Topics, sort by date
     # Retrieve only the objects from the database where the owner attribute
@@ -32,7 +30,7 @@ def topics(request):
 
 
 @login_required
-def topic(request, topic_id):
+def topic(request: HttpRequest, topic_id: int) -> HttpResponse:
     """Show single topic list the entries"""
     # query the database for the Topics, sort by date
     topic = Topic.objects.get(id=topic_id)
@@ -51,7 +49,7 @@ def topic(request, topic_id):
 # Create using POST endpoints
 #
 @login_required
-def new_topic(request):
+def new_topic(request: HttpRequest) -> HttpResponse:
     # Request is initially a GET for the form page itself
     """Create a new Topic"""
     if request.method != "POST":
@@ -81,7 +79,7 @@ def new_topic(request):
 
 
 @login_required
-def new_entry(request, topic_id):
+def new_entry(request: HttpRequest, topic_id: int) -> HttpResponse:
     """Create a new Entry for a Topic"""
     # pass the topic's id number
     topic = Topic.objects.get(id=topic_id)
@@ -118,7 +116,7 @@ def new_entry(request, topic_id):
 # Update endpoints
 #
 @login_required
-def edit_topic(request, topic_id):
+def edit_topic(request: HttpRequest, topic_id: int) -> HttpResponse:
     """Edit an existing Topic."""
     topic = get_object_or_404(Topic, id=topic_id)
 
@@ -141,7 +139,7 @@ def edit_topic(request, topic_id):
 
 
 @login_required
-def edit_entry(request, entry_id):
+def edit_entry(request: HttpRequest, entry_id: int) -> HttpResponse:
     """Edit an existing Entry"""
     entry = Entry.objects.get(id=entry_id)
     topic = entry.topic
@@ -175,7 +173,7 @@ def edit_entry(request, entry_id):
 #
 # Delete a topic (via form: POST for deletion)
 @login_required
-def delete_topic(request, topic_id):
+def delete_topic(request: HttpRequest, topic_id: int) -> HttpResponse:
     """Delete an existing Topic and its entries."""
     topic = get_object_or_404(Topic, id=topic_id)
 
@@ -191,7 +189,7 @@ def delete_topic(request, topic_id):
 
 # Delete an entry (via form: POST for deletion)
 @login_required
-def delete_entry(request, entry_id):
+def delete_entry(request: HttpRequest, entry_id: int) -> HttpResponse:
     """Delete an existing entry."""
     # Return the entry or show the 404 page
     entry = get_object_or_404(Entry, id=entry_id)

@@ -15,7 +15,7 @@ class Topic(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
     # Default method (__str__) is called for string output
-    def __str__(self):
+    def __str__(self) -> str:
         """Represent the model as a string"""
         return str(self.text)
 
@@ -35,7 +35,7 @@ class Entry(models.Model):
 
     # Default method (__str__) is called for string output
     # limit it to the first 50 charadters
-    def __str__(self):
+    def __str__(self) -> str:
         """Represent the entry model as a string"""
         display_string = str(self.text)
         if len(display_string) > 50:
