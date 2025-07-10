@@ -1,5 +1,6 @@
 # Requirements for production environment
 # PRECAUTION: avoid production dependencies that aren't in development
+# psycopg2 requires: libpq-dev (or postgresql-devel)
 
 -r base.txt
 gunicorn

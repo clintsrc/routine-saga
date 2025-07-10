@@ -1,4 +1,3 @@
-
 # Routine Saga [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Description
@@ -9,7 +8,6 @@ Routine Saga is a journal app implemented in Django to capture those day to day 
 [![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://render.com/)
 [![Font Awesome](https://img.shields.io/badge/Font_Awesome-339AF0?style=for-the-badge&logo=fontawesome&logoColor=white)](https://fontawesome.com/)
 
-
 ## Table of Contents
 
 - [Installation](#installation)
@@ -19,28 +17,79 @@ Routine Saga is a journal app implemented in Django to capture those day to day 
 - [Tests](#tests)
 - [Questions](#questions)
 
-
 ## Installation
 
 1. Change to the project's root directory
-2. Create the virtual environment: make venv
-3. Activate the environment:
-Windows: source .venv/Scripts/activate
-Nonwindows: source .venv/bin/activate
-4. Install the dependency modules: pip install -r requirements/local.txt
-5. Configure the .envs/.env file for your environment (see .envs/.env.EXAMPLE)
-6. Create the database: psql -U postgres -f db/schema.sql
-7. Migrate the database: python manage.py migrate
-8. Seed the databse: python manage.py seed
+2. Create the virtual environment:
 
+```bash
+make venv
+```
+
+3. Activate the environment:
+
+- Windows:
+
+```bash
+# For CMD use:
+.venv/Scripts/activate
+# For PowerShell use:
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+.venv\Scripts\Activate.ps1
+```
+
+   - Nonwindows:
+
+```bash
+source .venv/bin/activate
+```
+
+4. Install the dependency modules:
+
+```bash
+pip install -r requirements/local.txt
+```
+
+5. Configure the .envs/.env file for your environment (see .envs/.env.EXAMPLE)
+6. Create the database:
+
+```bash
+psql -U postgres -f db/schema.sql
+```
+
+7. Migrate the database:
+
+```bash
+python3 manage.py migrate
+```
+
+8. Seed the databse:
+
+```bash
+python3 manage.py seed
+```
 
 ## Usage
 
 1. Change to the project's root directory
-2. Start the application: python3 manage.py runserver
+2. Start the application:
+
+```bash
+python3 manage.py runserver
+```
+
 3. Access the local site at: http://127.0.0.1:8000/
-4. See the docs/*.md for detailed notes including deployment steps
-* ![Solid Guess screenshot](docs/images/screenshot.png)
+4. To promote an existing account to admin:
+
+   - (Django Admin page: http://127.0.0.1:8000/admin/)
+
+```bash
+python3 manage.py promote_to_admin [username]
+```
+
+NOTE: See the docs/\*.md for detailed notes including deployment steps
+
+- ![Routine Saga screenshot](docs/images/screenshot.png)
 
 ## License
 
@@ -58,6 +107,7 @@ Thank you for your contributions!
 ## Tests
 
 Test instructions:
+
 1. Create a new account.
 2. Create a new topic.
 3. Edit the topic.
@@ -67,8 +117,9 @@ Test instructions:
 7. Delete the topic.
 
 ## Future Improvements
-* REST using Insomnia (checkin exports), or Postman
-* Dockerize
+
+- REST using Insomnia (checkin exports), or Postman
+- Dockerize
   - dev environment (and use 'gunicorn --reload')
   - Use a postgres container
   - Deploy the container to Render
@@ -76,6 +127,6 @@ Test instructions:
 ## Questions
 
 If you have any questions, feel free to reach out:
+
 - GitHub: [clintsrc](https://github.com/clintsrc)
 - Email: clinton.alan.jones@gmail.com
-
