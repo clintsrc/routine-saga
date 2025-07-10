@@ -1,6 +1,5 @@
 # Requirements for the Development environment
 -r production.txt
-psycopg2-binary
 pylint
 mypy
 black
