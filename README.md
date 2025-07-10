@@ -28,8 +28,21 @@ make venv
 
 3. Activate the environment:
 
-   - Windows: source .venv/Scripts/activate
-   - Nonwindows: source .venv/bin/activate
+- Windows:
+
+```bash
+# For CMD use:
+.venv/Scripts/activate
+# For PowerShell use:
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+.venv\Scripts\Activate.ps1
+```
+
+   - Nonwindows:
+
+```bash
+source .venv/bin/activate
+```
 
 4. Install the dependency modules:
 
@@ -59,18 +72,20 @@ python3 manage.py seed
 ## Usage
 
 1. Change to the project's root directory
-2. Start the application: python3 manage.py runserver
+2. Start the application:
+
+```bash
+python3 manage.py runserver
+```
+
 3. Access the local site at: http://127.0.0.1:8000/
 4. To promote an existing account to admin:
 
-    - (Django Admin page: http://127.0.0.1:8000/admin/)
+   - (Django Admin page: http://127.0.0.1:8000/admin/)
 
 ```bash
-python33 manage.py promote_to_admin [username]
+python3 manage.py promote_to_admin [username]
 ```
-
-
-
 
 NOTE: See the docs/\*.md for detailed notes including deployment steps
 
