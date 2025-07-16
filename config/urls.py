@@ -20,6 +20,10 @@ Including another urls.py (this will 'build up' the full endpoint path)
 from django.contrib import admin
 from django.urls import path, include
 from django.http import HttpRequest, HttpResponse, JsonResponse
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 
 def home_view(request: HttpRequest) -> HttpResponse:
@@ -42,4 +46,9 @@ urlpatterns = [
     path("", include("notes.urls")),
     # infrastructure-related endpoints
     path("healthz/", health_check),
+    # jwt auth
+    # for login and refresh access token
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    # refresh access token
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

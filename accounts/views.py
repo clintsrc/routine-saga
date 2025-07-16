@@ -7,10 +7,9 @@ from django.http import HttpRequest, HttpResponse
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ValidationError
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from .utils import register_user
-from .models import Token
-
 
 def register(request: HttpRequest) -> HttpResponse:
     """New User registration"""
@@ -62,14 +61,15 @@ def api_register(request: HttpRequest) -> JsonResponse:
         return JsonResponse({"error": str(ve)}, status=400)
 
     # Create token
-    token, _ = Token.objects.get_or_create(user=user)
+    refresh = RefreshToken.for_user(user)
 
     # Return the registered user and their access token
     return JsonResponse(
         {
             "message": "User registered successfully.",
-            "token": token.key,
             "username": user.username,
+            "access": str(refresh.access_token),
+            "refresh": str(refresh),
         },
         status=201,
     )
