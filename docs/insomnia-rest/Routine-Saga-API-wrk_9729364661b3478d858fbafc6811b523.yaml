@@ -1,0 +1,136 @@
+type: collection.insomnia.rest/5.0
+name: Routine Saga API
+meta:
+  id: wrk_9729364661b3478d858fbafc6811b523
+  created: 1752694020149
+  modified: 1752694020149
+  description: ""
+collection:
+  - url: http://localhost:8000/healthz
+    name: health
+    meta:
+      id: req_42bbb41709804096b1e1f94ca54f7a36
+      created: 1752276021725
+      modified: 1752694059852
+      isPrivate: false
+      description: ""
+      sortKey: -1752276021725
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    scripts:
+      preRequest: ""
+      afterResponse: ""
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/accounts/api/register/
+    name: register-user
+    meta:
+      id: req_79adaafd89c24e4089d48dd6be9a4bc9
+      created: 1752604734563
+      modified: 1752605204090
+      isPrivate: false
+      description: ""
+      sortKey: -1752604734563
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "username": "newuser",
+          "password1": "supersecret123",
+          "password2": "supersecret123"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.3.0
+      - name: Content-Type
+        value: application/json
+    scripts:
+      preRequest: ""
+      afterResponse: ""
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/api/token/
+    name: login
+    meta:
+      id: req_637c8164cc214d99b2dfc9e9dbb06ab6
+      created: 1752694088345
+      modified: 1752696036108
+      isPrivate: false
+      description: ""
+      sortKey: -1752694088345
+    method: POST
+    body:
+      mimeType: application/json
+      text: '{"username": "newuser", "password": "supersecret123"}'
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.2.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/api/token/refresh/
+    name: refresh-token
+    meta:
+      id: req_d8200e6361144c729b974a592c9ce2a9
+      created: 1752694486750
+      modified: 1752694620040
+      isPrivate: false
+      description: ""
+      sortKey: -1752649411454
+    method: POST
+    body:
+      mimeType: application/json
+      text: >-
+        {
+        	"refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1Mjc4MTAxMCwiaWF0IjoxNzUyNjk0NjEwLCJqdGkiOiJmYmMwZTFhZjgwMWI0OGMzOTJmYjBkYTkxNDUwYzg3MiIsInVzZXJfaWQiOjJ9.seWsn4HuNJ0GGs3-6NUnKwc7kfQKgnLF62kJh83b8rs"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.2.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_98642eb7e6a0428a8db60d7e7550cfb0
+    created: 1752275848497
+    modified: 1752275848497
+environments:
+  name: Base Environment
+  meta:
+    id: env_2bb2eac30c4940469ed51f774bcd569a
+    created: 1752275848494
+    modified: 1752275848494
+    isPrivate: false
