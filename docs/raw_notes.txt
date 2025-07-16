@@ -1,0 +1,40 @@
+========
+Insomnia
+========
+
+Create a new Project
+Projects pane | +, Create Project
+   Name: <ProjectName>
+   Local vault
+
+
+Add a Collection to group the API requests
+<Project Name> | Collections | +
+   Create a new Request Collection
+   Name it: <ProjectName> API
+
++ | HTTP Request
+   Name: health
+   URL: http://localhost:8000/healthz/
+
+
+
+======= TBD =========
+Environments
++ create new envioronment
+   Name: Development
+   Variable:
+      Switch value to input type JSON
+      name: base_url
+      value:
+{
+  "base_url": "http://localhost:8000"
+}
+=====================
+
+
+Export:
+Window menu: Application | Preferences
+Data tab | Export Data
+   Export data from the <ProjectName> project
+   JSON format

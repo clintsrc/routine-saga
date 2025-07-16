@@ -23,7 +23,7 @@ class Topic(models.Model):
 class Entry(models.Model):
     """Note entries for a topic"""
 
-    # delete all all associeated topic entries
+    # delete all all associated topic entries
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
     text = models.TextField()
     # When a topic is created, automatically add a timestamp
