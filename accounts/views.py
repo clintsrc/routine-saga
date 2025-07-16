@@ -11,6 +11,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from .utils import register_user
 
+
 def register(request: HttpRequest) -> HttpResponse:
     """New User registration"""
     if request.method != "POST":
