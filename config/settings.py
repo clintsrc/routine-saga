@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     "accounts",
     # 3rd party apps
     "django_bootstrap5",
+    "rest_framework",  # for auth hooks for jwt
     # core apps
     "django.contrib.admin",
     "django.contrib.auth",
@@ -124,6 +125,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Use jwt tokens for authentication in
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    )
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
