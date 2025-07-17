@@ -126,7 +126,7 @@ collection:
     meta:
       id: req_de60ef3dd47849fe9e9c8929e89ce372
       created: 1752694486750
-      modified: 1752784695829
+      modified: 1752785774968
       isPrivate: false
       description: ""
       sortKey: -1752649411454
@@ -135,7 +135,7 @@ collection:
       mimeType: application/json
       text: |-
         {
-        	"refresh": "{{ _jwt.refresh }}"
+        	"refresh": "{{ jwt.refresh }}"
         }
     headers:
       - name: Content-Type
