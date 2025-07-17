@@ -1,15 +1,15 @@
 type: collection.insomnia.rest/5.0
 name: Routine Saga API
 meta:
-  id: wrk_9729364661b3478d858fbafc6811b523
-  created: 1752694020149
-  modified: 1752694020149
+  id: wrk_9ea78d10b93f4f1ca9c8dca6069b8a7d
+  created: 1752780458264
+  modified: 1752780458264
   description: ""
 collection:
   - url: http://localhost:8000/healthz
     name: health
     meta:
-      id: req_42bbb41709804096b1e1f94ca54f7a36
+      id: req_881c9b13cf434862879c878e47513d7c
       created: 1752276021725
       modified: 1752694059852
       isPrivate: false
@@ -30,12 +30,12 @@ collection:
         send: true
         store: true
       rebuildPath: true
-  - url: http://localhost:8000/accounts/api/register/
+  - url: "{{ _.base_url }}/accounts/api/register/"
     name: register-user
     meta:
-      id: req_79adaafd89c24e4089d48dd6be9a4bc9
+      id: req_7e3039bd6fe042bbbc1336aa814d7443
       created: 1752604734563
-      modified: 1752605204090
+      modified: 1752784386085
       isPrivate: false
       description: ""
       sortKey: -1752604734563
@@ -44,9 +44,9 @@ collection:
       mimeType: application/json
       text: |-
         {
-          "username": "newuser",
-          "password1": "supersecret123",
-          "password2": "supersecret123"
+          "username": "{{ _.username }}",
+          "password1": "{{ _.password }}",
+          "password2": "{{ _.password }}"
         }
     headers:
       - name: Content-Type
@@ -56,7 +56,19 @@ collection:
       - name: Content-Type
         value: application/json
     scripts:
-      preRequest: ""
+      preRequest: >
+        module.exports.responseHooks = [
+          async (context) => {
+            const responseBody = await context.response.getBody();
+            const data = JSON.parse(responseBody);
+
+            if (data.access && data.refresh) {
+              await context.store.setEnvironmentVariable("jwt.access", data.access);
+              await context.store.setEnvironmentVariable("jwt.refresh", data.refresh);
+              console.log("JWT tokens saved");
+            }
+          }
+        ];
       afterResponse: ""
     settings:
       renderRequestBody: true
@@ -66,24 +78,41 @@ collection:
         send: true
         store: true
       rebuildPath: true
-  - url: http://localhost:8000/api/token/
+  - url: "{{ _.base_url }}/api/token/"
     name: login
     meta:
-      id: req_637c8164cc214d99b2dfc9e9dbb06ab6
+      id: req_c79c82a2614d492ca078922707dc1718
       created: 1752694088345
-      modified: 1752696036108
+      modified: 1752785383011
       isPrivate: false
       description: ""
       sortKey: -1752694088345
     method: POST
     body:
       mimeType: application/json
-      text: '{"username": "newuser", "password": "supersecret123"}'
+      text: |
+        {
+          "username": "{{ _.username }}",
+          "password": "{{ _.password }}"
+        }
     headers:
       - name: Content-Type
         value: application/json
       - name: User-Agent
         value: insomnia/11.2.0
+    scripts:
+      preRequest: ""
+      afterResponse: >
+        module.exports.responseHooks = [
+          async (context) => {
+            const responseBody = await context.response.getBody();
+            const data = JSON.parse(responseBody);
+            if (data.access && data.refresh) {
+              await context.store.setEnvironmentVariable("jwt.access", data.access);
+              await context.store.setEnvironmentVariable("jwt.refresh", data.refresh);
+            }
+          }
+        ];
     settings:
       renderRequestBody: true
       encodeUrl: true
@@ -95,24 +124,27 @@ collection:
   - url: http://localhost:8000/api/token/refresh/
     name: refresh-token
     meta:
-      id: req_d8200e6361144c729b974a592c9ce2a9
+      id: req_de60ef3dd47849fe9e9c8929e89ce372
       created: 1752694486750
-      modified: 1752694620040
+      modified: 1752784695829
       isPrivate: false
       description: ""
       sortKey: -1752649411454
     method: POST
     body:
       mimeType: application/json
-      text: >-
+      text: |-
         {
-        	"refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1Mjc4MTAxMCwiaWF0IjoxNzUyNjk0NjEwLCJqdGkiOiJmYmMwZTFhZjgwMWI0OGMzOTJmYjBkYTkxNDUwYzg3MiIsInVzZXJfaWQiOjJ9.seWsn4HuNJ0GGs3-6NUnKwc7kfQKgnLF62kJh83b8rs"
+        	"refresh": "{{ _jwt.refresh }}"
         }
     headers:
       - name: Content-Type
         value: application/json
       - name: User-Agent
         value: insomnia/11.2.0
+    scripts:
+      preRequest: ""
+      afterResponse: ""
     settings:
       renderRequestBody: true
       encodeUrl: true
@@ -124,13 +156,15 @@ collection:
 cookieJar:
   name: Default Jar
   meta:
-    id: jar_98642eb7e6a0428a8db60d7e7550cfb0
+    id: jar_8e299e7eba1743129b35b39cf8314a9b
     created: 1752275848497
-    modified: 1752275848497
+    modified: 1752785605062
 environments:
   name: Base Environment
   meta:
-    id: env_2bb2eac30c4940469ed51f774bcd569a
+    id: env_1927e8aededd451e90702ef23d5ace94
     created: 1752275848494
-    modified: 1752275848494
+    modified: 1752785605064
     isPrivate: false
+  data:
+    base_url: http://localhost:8000
